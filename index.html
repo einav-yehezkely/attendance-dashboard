@@ -169,6 +169,27 @@ g.row.sel .hit{fill:var(--accent-soft)}
 .namebtn{cursor:pointer}
 .namebtn:hover .lbl{text-decoration:underline}
 
+/* trends */
+.tline{fill:none;stroke:var(--s1);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.tarea{fill:var(--s1);opacity:.1}
+.tdot{fill:var(--s1);stroke:var(--surface);stroke-width:2}
+.tdot-sm{fill:var(--s1)}
+.tzero{fill:var(--axis)}
+.sv{fill:var(--ink-2);font-size:10px;font-variant-numeric:tabular-nums}
+.spark{display:block;overflow:visible}
+table.data.trend{min-width:780px}
+table.data.trend td{vertical-align:middle;padding-block:10px}
+.tcell{display:inline-flex;flex-direction:column;gap:3px;outline:none;border-radius:6px;padding:2px}
+.tcell:hover,.tcell:focus-visible{background:var(--hover)}
+.tcell small{color:var(--muted);font-size:12px}
+.flags{display:flex;flex-wrap:wrap;gap:6px}
+.pill i svg{width:11px;height:11px}
+.pill[data-tip]{cursor:help}
+.tflags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.tgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.tgrid h3{font-size:14px;font-weight:600;margin-bottom:2px}
+.tgrid p{margin:0 0 8px;color:var(--muted);font-size:12.5px}
+@media (max-width:900px){.tgrid{grid-template-columns:1fr}}
 .legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;font-size:12.5px;color:var(--ink-2);align-items:center}
 .legend .it{display:inline-flex;align-items:center;gap:6px}
 .sw{width:14px;height:14px;border-radius:3px;display:inline-grid;place-items:center;font-size:10px;font-weight:700;flex:none}
@@ -237,7 +258,7 @@ table.data.logt tr.off td{color:var(--muted)}
     <div class="wrap band-in">
       <div>
         <div class="eyebrow" id="eyebrow">כרטיס נוכחות חודשי</div>
-        <div class="titlerow"><h1 id="title">נוכחות מבוגרים</h1><button class="clearemp" id="clearEmp" hidden>× כל העובדים</button></div>
+        <div class="titlerow"><h1 id="title">נוכחות יציר כפיים</h1><button class="clearemp" id="clearEmp" hidden>× כל העובדים</button></div>
         <div class="meta" id="meta"></div>
       </div>
       <div class="actions">
@@ -335,6 +356,11 @@ table.data.logt tr.off td{color:var(--muted)}
     </section>
 
     <section class="panel">
+      <div class="phead"><div><h2 id="trTitle">מגמות לאורך התקופה</h2><p id="trSub"></p></div></div>
+      <div id="trend"></div>
+    </section>
+
+    <section class="panel">
       <div class="phead">
         <div><h2 id="arrTitle">יום טיפוסי לכל עובד</h2><p id="arrSub"></p></div>
       </div>
@@ -355,6 +381,7 @@ table.data.logt tr.off td{color:var(--muted)}
 
 <script>
 const LS_KEY = 'nm-attendance-book-v1';
+const APP_TITLE = document.title;
 const WD = ['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
 const WD_FULL = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
 const $ = s => document.querySelector(s);
@@ -510,10 +537,10 @@ const rtlText = (x,y,cls,txt,extra='') => `<text x="${x}" y="${y}" class="${cls}
 
 /* ---------- render: header, filters ---------- */
 function renderMeta(){
-  $('#title').textContent = STATE.emp || 'נוכחות מבוגרים';
-  $('#eyebrow').textContent = STATE.emp ? 'נוכחות מבוגרים · כרטיס עובד' : 'כרטיס נוכחות חודשי';
+  $('#title').textContent = STATE.emp || 'נוכחות יציר כפיים';
+  $('#eyebrow').textContent = STATE.emp ? 'נוכחות יציר כפיים · כרטיס עובד' : 'כרטיס נוכחות חודשי';
   $('#clearEmp').hidden = !STATE.emp;
-  document.title = STATE.emp ? `${STATE.emp} · נוכחות מבוגרים` : 'נוכחות מבוגרים';
+  document.title = STATE.emp ? `${STATE.emp} · ${APP_TITLE}` : APP_TITLE;
   const D = STATE.data, f = D.days[0].date, l = D.days[D.days.length-1].date;
   const work = D.days.filter(d => !d.closed && d.has).length;
   $('#meta').innerHTML = `<span><b>${esc((D.file || 'קובץ ללא שם').replace(/\.(xlsx|xlsm|xls|csv)$/i,''))}</b></span><span class="tnum">${ddmmyy(f)} – ${ddmmyy(l)}</span><span>${D.emps.length} עובדים ברשימה</span><span>${work} ימי פעילות</span>`;
@@ -538,7 +565,7 @@ function renderKPIs(){
     const heads = WORK.map(d => presentOn(D,d).length);
     const ins = STATS.flatMap(s => s.ins);
     const miss = STATS.reduce((a,s) => a+s.missing, 0), missE = STATS.filter(s => s.missing).length;
-    tiles.push({k:'סה״כ שעות', v:num1(hours), s:`ב-${WORK.length} ימי פעילות${closed?` · ${closed} סגור`:''}`});
+    tiles.push({k:'סה״כ שעות', v:num1(hours), s:`ב־${WORK.length} ימי פעילות${closed?` · ${closed} סגור`:''}`});
     tiles.push({k:'ממוצע ליום עבודה', v:dur(full?hours/full:null), u:'שעות', s:'לעובד, בימים עם כניסה ויציאה'});
     tiles.push({k:'עובדים ביום, בממוצע', v:heads.length?numN(mean(heads)):'—', s:`מתוך ${act.length} שהגיעו לפחות פעם אחת`});
     tiles.push({k:'אחוז נוכחות', v:poss?Math.round(pres/poss*100)+'%':'—', s:`${pres} ימי נוכחות מתוך ${poss} אפשריים`});
@@ -550,7 +577,7 @@ function renderKPIs(){
     const s = STATS.find(x => x.e === STATE.emp);
     tiles.push({k:'ימי נוכחות', v:`${s.present}`, u:`/ ${s.possible}`, s:'ימים שהגיע מתוך ימי עבודה'});
     tiles.push({k:'אחוז נוכחות', v:s.pct!=null?Math.round(s.pct*100)+'%':'—', s:WORK.length?`בתקופה של ${WORK.length} ימי פעילות`:''});
-    tiles.push({k:'סה״כ שעות', v:num1(s.hours), s:`מ-${s.full} ימים מלאים`});
+    tiles.push({k:'סה״כ שעות', v:num1(s.hours), s:`מ־${s.full} ימים מלאים`});
     tiles.push({k:'ממוצע ליום', v:dur(s.avgDay), u:'שעות', s:'בימים עם כניסה ויציאה'});
     tiles.push({k:'שעת הגעה טיפוסית', v:hm(s.inMed), s:`ממוצע ${hm(s.inAvg)}`});
     tiles.push({k:'שעת יציאה טיפוסית', v:hm(s.outMed), s:`ממוצע ${hm(mean(s.outs))}`});
@@ -599,12 +626,12 @@ function renderIssues(){
     if (s.possible > 0 && s.present === 0) list.push({t:'none', e:s.e, d:null, det:`${s.possible} ימי עבודה בלי אף החתמה`});
     for (const d of PDAYS){
       const st = status(D, s.e, d), c = D.cells.get(s.e+'|'+d.key);
-      if (st === 'partial') list.push({t:'miss', e:s.e, d, lab:c.in==null?'חסרה כניסה':'חסרה יציאה', det:c.in!=null?`נרשמה כניסה ב-${hm(c.in)}`:`נרשמה יציאה ב-${hm(c.out)}`});
+      if (st === 'partial') list.push({t:'miss', e:s.e, d, lab:c.in==null?'חסרה כניסה':'חסרה יציאה', det:c.in!=null?`נרשמה כניסה ב־${hm(c.in)}`:`נרשמה יציאה ב־${hm(c.out)}`});
       else if (st === 'bad') list.push({t:'bad', e:s.e, d, det:`כניסה ${hm(c.in)}, יציאה ${hm(c.out)}`});
       else if (st === 'full' && c.out-c.in < 45) list.push({t:'short', e:s.e, d, det:`${hm(c.in)}–${hm(c.out)}, ${c.out-c.in} דקות בלבד`});
     }
   }
-  const T = {miss:{lab:'החתמה חסרה', i:'i-warn', g:'!'}, bad:{lab:'יציאה לפני כניסה', i:'i-crit', g:'×'}, short:{lab:'יום קצר מ-45 דק׳', i:'i-serious', g:'↓'}, none:{lab:'ברשימה בלי נוכחות', i:'i-none', g:'?'}};
+  const T = {miss:{lab:'החתמה חסרה', i:'i-warn', g:'!'}, bad:{lab:'יציאה לפני כניסה', i:'i-crit', g:'×'}, short:{lab:'יום קצר מ־45 דק׳', i:'i-serious', g:'↓'}, none:{lab:'ברשימה בלי נוכחות', i:'i-none', g:'?'}};
   const el = $('#issues');
   if (!list.length){ el.innerHTML = `<div class="empty-ok"><span class="pill"><i class="i-good">✓</i>תקין</span>לא נמצאו בעיות בנתונים בתקופה הזו.</div>`; return; }
   list.sort((a,b) => (a.d?a.d.date:0) - (b.d?b.d.date:0));
@@ -730,7 +757,7 @@ function renderDaily(){
   }
   if (avg != null){ s += `<line class="avg" x1="${xL}" x2="${xR}" y1="${y(avg)}" y2="${y(avg)}"/><text class="val" x="${xR-2}" y="${y(avg)-7}" text-anchor="start" direction="rtl">ממוצע ${numN(avg)}</text>`; }
   el.innerHTML = s + '</svg>';
-  $('#dailySub').textContent = STATE.emp ? `בכחול: ימים ש${STATE.emp} הגיע/ה. אפור: ימים שלא.` : `ממוצע ${avg!=null?numN(avg):'—'} עובדים ביום, בין ${vMin} ל-${vMax}`;
+  $('#dailySub').textContent = STATE.emp ? `בכחול: ימים ש${STATE.emp} הגיע/ה. אפור: ימים שלא.` : `ממוצע ${avg!=null?numN(avg):'—'} עובדים ביום, בין ${vMin} ל־${vMax}`;
 }
 
 /* ---------- generic columns ---------- */
@@ -744,10 +771,10 @@ function colChart(el, items, o){
   items.forEach((it,i) => {
     const cx = xR - slot*(i+.5), v = it.value || 0;
     s += `<g class="col"${tipAttr(it.tip)}><rect class="hit" x="${cx-slot/2}" y="${top-18}" width="${slot}" height="${yB-top+18}"/>`;
-    if (v > 0) s += `<path class="${it.mute?'mk-mute':'mk-s1'}" d="${vbar(cx-cw/2, yB, cw, yB-y(v))}"/>`;
+    if (v > 0) s += `<path class="${it.mute?'mk-mute':(o.cls||'mk-s1')}" d="${vbar(cx-cw/2, yB, cw, yB-y(v))}"/>`;
     s += `<text class="val" x="${cx}" y="${y(v)-7}" text-anchor="middle">${it.value==null?'—':o.fmt(v)}</text>`;
     s += `<text class="xl" x="${cx}" y="${yB+17}" text-anchor="middle" direction="rtl">${esc(it.l1)}</text>`;
-    if (it.l2) s += `<text class="tick" x="${cx}" y="${yB+32}" text-anchor="middle" direction="rtl">${esc(it.l2)}</text>`;
+    if (it.l2 && slot >= 84) s += `<text class="tick" x="${cx}" y="${yB+32}" text-anchor="middle" direction="rtl">${esc(it.l2)}</text>`;
     s += `</g>`;
   });
   el.innerHTML = s + '</svg>';
@@ -774,7 +801,7 @@ function renderWeekday(){
     const ds = WORK.filter(d => d.date.getDay() === g);
     if (e){
       const s = empStats(D, ds, e);
-      return {l1:WD_FULL[g], value:s.pct==null?null:s.pct*100, tip:`<b>יום ${WD_FULL[g]}</b><br>${esc(e)} הגיע/ה ב-${s.present} מתוך ${s.possible} ימים`};
+      return {l1:WD_FULL[g], value:s.pct==null?null:s.pct*100, tip:`<b>יום ${WD_FULL[g]}</b><br>${esc(e)} הגיע/ה ב־${s.present} מתוך ${s.possible} ימים`};
     }
     const heads = ds.map(d => presentOn(D,d).length);
     return {l1:WD_FULL[g], value:mean(heads), tip:`<b>יום ${WD_FULL[g]}</b><br>ממוצע ${numN(mean(heads))} עובדים<br><span class="t-m">${ds.length} ימים: ${heads.join(', ')}</span>`};
@@ -784,6 +811,146 @@ function renderWeekday(){
   colChart($('#weekday'), items, e
     ? {aria:'אחוז נוכחות לפי יום בשבוע', fmt:v => Math.round(v)+'%', tick:t => Math.round(t)+'%', minMax:100}
     : {aria:'ממוצע עובדים לפי יום בשבוע', fmt:v => numN(v), tick:t => numN(t)});
+}
+
+/* ---------- trends across weeks ---------- */
+// One entry per week. Arrival needs 2+ arrivals in a week, so a single odd day doesn't read as a trend.
+function weekSeries(D, e){
+  return D.weeks.map(w => {
+    const s = empStats(D, w.days, e);
+    return {w, on:w.roster.has(e) && s.possible > 0, pct:s.possible ? s.present/s.possible : null, present:s.present, possible:s.possible,
+      ins:s.ins, inMed:s.ins.length >= 2 ? median(s.ins) : null, miss:s.missing};
+  });
+}
+// Compares the first two weeks with the last two.
+function trendOf(ser){
+  const ends = (a, f) => a.length >= 3 ? {a:mean(a.slice(0,2).map(f)), b:mean(a.slice(-2).map(f))} : null;
+  const A = ends(ser.filter(x => x.on), x => x.pct*100);
+  const T = ends(ser.filter(x => x.inMed != null), x => x.inMed);
+  const missTotal = ser.reduce((a,x) => a + x.miss, 0), missWeeks = ser.filter(x => x.miss > 0).length;
+  const flags = [];
+  const pa = A && Math.round(A.a), pb = A && Math.round(A.b);
+  const attTip = A && `בשבועיים הראשונים הגיע/ה ב־${pa}% מימי העבודה, ובשבועיים האחרונים ב־${pb}%.`;
+  const arrTip = T && `שעת הגעה טיפוסית: ${hm(T.a)} בשבועיים הראשונים, ${hm(T.b)} בשבועיים האחרונים.`;
+  if (A && A.b - A.a <= -25) flags.push({t:'down', bad:true, lab:`נוכחות ירדה מ־${pa}% ל־${pb}%`, tip:attTip});
+  else if (A && A.b - A.a >= 25) flags.push({t:'up', lab:`נוכחות עלתה מ־${pa}% ל־${pb}%`, tip:attTip});
+  if (T && T.b - T.a >= 15) flags.push({t:'late', bad:true, lab:`מגיע/ה ${Math.round(T.b-T.a)} דק׳ מאוחר יותר מבתחילת התקופה`, tip:arrTip});
+  else if (T && T.b - T.a <= -15) flags.push({t:'early', lab:`מגיע/ה ${Math.round(T.a-T.b)} דק׳ מוקדם יותר מבתחילת התקופה`, tip:arrTip});
+  if (missTotal >= 3 && missWeeks >= 2) flags.push({t:'miss', bad:true, lab:`${missTotal} החתמות חסרות ב־${missWeeks} שבועות שונים`,
+    tip:'ימים עם כניסה בלי יציאה, או יציאה בלי כניסה. מסומן כשיש 3 או יותר, בשני שבועות לפחות.'});
+  if (!flags.length) flags.push(A || T
+    ? {t:'ok', lab:'ללא שינוי בולט', tip:'אין ירידה או עלייה של 25 נקודות אחוז בנוכחות, אין שינוי של 15 דקות בשעת ההגעה, ואין החתמות חסרות חוזרות.'}
+    : {t:'few', lab:'מעט מדי נתונים', tip:'כדי לזהות מגמה צריך לפחות 3 שבועות עם נתונים.'});
+  return {A, T, missTotal, missWeeks, flags};
+}
+const CLOCK = '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="6" cy="6" r="4.6"/><path d="M6 3.4V6l1.8 1.2"/></svg>';
+const FLAG = {down:['i-serious','↓'], up:['i-good','↑'], late:['i-warn',CLOCK], early:['i-good',CLOCK], miss:['i-warn','!'], ok:['i-good','✓'], few:['i-none','?']};
+const flagChips = tr => tr.flags.map(f => `<span class="pill"${f.tip ? tipAttr(f.tip) : ''}><i class="${FLAG[f.t][0]}">${FLAG[f.t][1]}</i>${esc(f.lab)}</span>`).join('');
+function spark(vals, o){
+  const W = 128, H = 36, px = 6, py = 6, n = vals.length;
+  const X = i => n === 1 ? W/2 : W - px - i*(W-2*px)/(n-1);
+  const Y = v => H - py - (v - o.lo)/((o.hi - o.lo) || 1)*(H - 2*py);
+  const pts = vals.map((v,i) => v == null ? null : [X(i), Y(v)]);
+  const last = pts.map(p => !!p).lastIndexOf(true);
+  let s = `<svg class="spark" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true"><line class="grid" x1="${px}" x2="${W-px}" y1="${H-py}" y2="${H-py}"/>`;
+  const runs = []; let cur = [];
+  pts.forEach(p => { if (p) cur.push(p); else if (cur.length){ runs.push(cur); cur = []; } });
+  if (cur.length) runs.push(cur);
+  for (const r of runs){
+    if (r.length < 2) continue;
+    if (o.area) s += `<path class="tarea" d="M${r[0][0]},${H-py}${r.map(p => `L${p[0]},${p[1]}`).join('')}L${r[r.length-1][0]},${H-py}Z"/>`;
+    s += `<path class="tline" d="${r.map((p,i) => `${i?'L':'M'}${p[0]},${p[1]}`).join('')}"/>`;
+  }
+  pts.forEach((p,i) => { if (p) s += i === last ? `<circle class="tdot" cx="${p[0]}" cy="${p[1]}" r="3.5"/>` : `<circle class="tdot-sm" cx="${p[0]}" cy="${p[1]}" r="2"/>`; });
+  return s + '</svg>';
+}
+function missBars(vals, max){
+  const W = 128, H = 36, n = vals.length, slot = (W-8)/n, bw = Math.min(12, slot*.55), yB = H-4;
+  let s = `<svg class="spark" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true"><line class="grid" x1="4" x2="${W-4}" y1="${yB}" y2="${yB}"/>`;
+  vals.forEach((v,i) => {
+    const cx = W - 4 - slot*(i+.5);
+    if (v == null) return;
+    if (v > 0){ const h = Math.max(4, v/max*(H-16)); s += `<path class="c-warn" d="${vbar(cx-bw/2, yB, bw, h)}"/><text class="sv" x="${cx}" y="${yB-h-3}" text-anchor="middle">${v}</text>`; }
+    else s += `<circle class="tzero" cx="${cx}" cy="${yB}" r="1.6"/>`;
+  });
+  return s + '</svg>';
+}
+const wkName = x => `שבוע ${x.w.idx+1}`;
+function renderTrend(){
+  if (STATE.emp) return renderTrendEmp();
+  const D = STATE.data;
+  $('#trTitle').textContent = 'מגמות לאורך התקופה';
+  $('#trSub').textContent = 'כל שורה מראה עובד לאורך כל השבועות בקובץ, משבוע 1 מימין עד השבוע האחרון משמאל. ההשוואה היא בין שני השבועות הראשונים לשני האחרונים. עובדים שיש אצלם משהו לבדוק מופיעים ראשונים.';
+  const rows = D.emps.map(e => { const ser = weekSeries(D,e); return {e, ser, tr:trendOf(ser)}; }).filter(r => r.ser.some(x => x.present));
+  const bad = r => r.tr.flags.filter(f => f.bad).length;
+  rows.sort((a,b) => bad(b) - bad(a) || a.e.localeCompare(b.e,'he'));
+  const maxMiss = Math.max(2, ...rows.flatMap(r => r.ser.map(x => x.miss)));
+  let h = `<table class="data trend"><thead><tr><th>עובד</th><th>נוכחות לפי שבוע</th><th>שעת הגעה טיפוסית לפי שבוע</th><th>החתמות חסרות לפי שבוע</th><th>מה לבדוק</th></tr></thead><tbody>`;
+  for (const r of rows){
+    const {ser, tr} = r;
+    const aTip = `<b>${esc(r.e)} · נוכחות</b><br>` + ser.map(x => x.on ? `${wkName(x)}: ${x.present} מתוך ${x.possible} ימים` : `${wkName(x)}: <span class="t-m">לא ברשימה</span>`).join('<br>');
+    const tv = ser.map(x => x.inMed), tvv = tv.filter(v => v != null);
+    let lo = Math.min(...tvv), hi = Math.max(...tvv);
+    if (hi - lo < 30){ const m = (hi+lo)/2; lo = m-15; hi = m+15; }
+    const tTip = `<b>${esc(r.e)} · שעת הגעה טיפוסית</b><br>` + ser.map(x => `${wkName(x)}: ${x.inMed != null ? hm(x.inMed) : x.ins.length === 1 ? `${hm(x.ins[0])} <span class="t-m">(יום אחד, לא נספר)</span>` : '—'}`).join('<br>') + '<br><span class="t-m">קו שעולה = מגיע/ה מאוחר יותר</span>';
+    const mTip = `<b>${esc(r.e)} · החתמות חסרות</b><br>` + ser.map(x => `${wkName(x)}: ${x.on ? x.miss : '—'}`).join('<br>');
+    h += `<tr data-emp="${esc(r.e)}"><td class="name">${esc(r.e)}</td>`
+      + `<td><div class="tcell"${tipAttr(aTip)}>${spark(ser.map(x => x.on ? x.pct*100 : null), {lo:0, hi:100, area:true})}<small>${tr.A ? `מ־${Math.round(tr.A.a)}% ל־${Math.round(tr.A.b)}%` : 'מעט מדי שבועות'}</small></div></td>`
+      + `<td><div class="tcell"${tipAttr(tTip)}>${tvv.length ? spark(tv, {lo, hi}) : '<svg class="spark" width="128" height="36" aria-hidden="true"></svg>'}<small class="tnum">${tr.T ? `מ־${hm(tr.T.a)} ל־${hm(tr.T.b)}` : 'מעט מדי נתונים'}</small></div></td>`
+      + `<td><div class="tcell"${tipAttr(mTip)}>${missBars(ser.map(x => x.on ? x.miss : null), maxMiss)}<small>${tr.missTotal ? `${tr.missTotal} בסך הכול, ב־${tr.missWeeks} שבועות` : 'אין'}</small></div></td>`
+      + `<td><div class="flags">${flagChips(tr)}</div></td></tr>`;
+  }
+  $('#trend').innerHTML = `<div class="tablewrap">${h}</tbody></table></div>`;
+}
+function renderTrendEmp(){
+  const D = STATE.data, e = STATE.emp, ser = weekSeries(D, e), tr = trendOf(ser);
+  $('#trTitle').textContent = `מגמות לאורך התקופה · ${e}`;
+  $('#trSub').textContent = 'איך השתנו הנוכחות, שעת ההגעה וההחתמות החסרות משבוע לשבוע, לאורך כל השבועות בקובץ.';
+  $('#trend').innerHTML = `<div class="tflags">${flagChips(tr)}</div><div class="tgrid">
+    <div><h3>נוכחות לפי שבוע</h3><p>${tr.A ? `מ־${Math.round(tr.A.a)}% בשבועיים הראשונים ל־${Math.round(tr.A.b)}% בשבועיים האחרונים` : 'אחוז מימי העבודה בשבוע'}</p><div class="chart" id="tA"></div></div>
+    <div><h3>שעת הגעה לפי שבוע</h3><p>${tr.T ? `מ־${hm(tr.T.a)} ל־${hm(tr.T.b)}. ` : ''}נקודה קטנה: יום אחד. קו: השעה הטיפוסית בשבוע.</p><div class="chart" id="tT"></div></div>
+    <div><h3>החתמות חסרות לפי שבוע</h3><p>${tr.missTotal ? `${tr.missTotal} בסך הכול, ב־${tr.missWeeks} שבועות` : 'לא היו החתמות חסרות'}</p><div class="chart" id="tM"></div></div>
+  </div>`;
+  colChart($('#tA'), ser.map(x => ({l1:wkName(x), l2:x.w.label, value:x.on ? x.pct*100 : null,
+      tip:`<b>${wkName(x)}</b> · ${x.w.label}<br>${x.on ? `${x.present} מתוך ${x.possible} ימים` : 'לא ברשימה'}`})),
+    {aria:'נוכחות לפי שבוע', fmt:v => Math.round(v)+'%', tick:t => Math.round(t)+'%', minMax:100, H:200});
+  arrivalWeekChart($('#tT'), ser);
+  colChart($('#tM'), ser.map(x => ({l1:wkName(x), l2:x.w.label, value:x.on ? x.miss : null,
+      tip:`<b>${wkName(x)}</b> · ${x.w.label}<br>${x.on ? `${x.miss} החתמות חסרות` : 'לא ברשימה'}`})),
+    {aria:'החתמות חסרות לפי שבוע', fmt:v => String(v), tick:t => String(t), int:true, minMax:2, H:200, cls:'c-warn'});
+}
+function arrivalWeekChart(el, ser){
+  const D = STATE.data, e = STATE.emp;
+  const all = ser.flatMap(x => x.ins);
+  if (!all.length){ el.innerHTML = '<p class="muted">אין שעות הגעה בתקופה.</p>'; return; }
+  const W = Math.max(260, el.clientWidth), H = 200, top = 24, bot = 46, axisW = 40, xR = W-axisW, xL = 6;
+  const n = ser.length, slot = (xR-xL)/n, cx = i => xR - slot*(i+.5);
+  let lo = Math.floor(Math.min(...all)/30)*30, hi = Math.ceil(Math.max(...all)/30)*30; if (hi - lo < 60) hi = lo + 60;
+  const step = hi - lo > 180 ? 60 : 30;
+  const y = t => top + (H-top-bot)*(1 - (t-lo)/(hi-lo)), yB = H-bot;
+  let s = svgOpen(W, H, 'שעת הגעה לפי שבוע');
+  for (let t = lo; t <= hi; t += step) s += `<line class="grid" x1="${xL}" x2="${xR}" y1="${y(t)}" y2="${y(t)}"/><text class="tick" x="${W}" y="${y(t)}" text-anchor="end" dominant-baseline="central">${hm(t)}</text>`;
+  const meds = ser.map(x => x.ins.length ? median(x.ins) : null);
+  ser.forEach((x,i) => {
+    const ds = x.w.days, gap = Math.min(10, slot*.6/Math.max(1, ds.length));
+    const lines = [];
+    let dots = '';
+    ds.forEach((d,j) => {
+      const c = D.cells.get(e+'|'+d.key);
+      if (!c || c.in == null) return;
+      lines.push(`${dayName(d.date)}: ${hm(c.in)}`);
+      dots += `<circle class="dot-in" cx="${cx(i) + ((ds.length-1)/2 - j)*gap}" cy="${y(c.in)}" r="3"/>`;
+    });
+    const tip = `<b>${wkName(x)}</b> · ${x.w.label}<br>${meds[i] != null ? `שעה טיפוסית ${hm(meds[i])}<br><span class="t-m">${lines.join('<br>')}</span>` : 'לא הגיע/ה'}`;
+    s += `<g class="col"${tipAttr(tip)}><rect class="hit" x="${cx(i)-slot/2}" y="${top-18}" width="${slot}" height="${yB-top+18}"/>${dots}</g>`;
+    s += `<text class="xl" x="${cx(i)}" y="${yB+17}" text-anchor="middle" direction="rtl">${wkName(x)}</text>${slot >= 84 ? `<text class="tick" x="${cx(i)}" y="${yB+32}" text-anchor="middle" direction="rtl">${x.w.label}</text>` : ''}`;
+  });
+  const pts = meds.map((m,i) => m == null ? null : [cx(i), y(m), m]);
+  let run = [];
+  const flush = () => { if (run.length > 1) s += `<path class="tline" style="pointer-events:none" d="${run.map((p,k) => `${k?'L':'M'}${p[0]},${p[1]}`).join('')}"/>`; run = []; };
+  pts.forEach(p => { if (p) run.push(p); else flush(); }); flush();
+  pts.forEach(p => { if (p) s += `<circle class="tdot" style="pointer-events:none" cx="${p[0]}" cy="${p[1]}" r="4.5"/><text class="val" style="pointer-events:none" x="${p[0]}" y="${p[1]-10}" text-anchor="middle">${hm(p[2])}</text>`; });
+  el.innerHTML = s + '</svg>';
 }
 
 /* ---------- arrival / exit strip ---------- */
@@ -848,7 +1015,7 @@ function renderArr(){
   s += `<text class="tick" x="4" y="12" text-anchor="end" direction="rtl">שעות ביום</text>`;
   rows.forEach((r,i) => {
     const y = top + i*rowH + rowH/2, on = !STATE.emp || STATE.emp === r.e;
-    const rng = a => a.length > 1 ? ` <span class="t-m">(בין ${hm(Math.min(...a))} ל-${hm(Math.max(...a))})</span>` : '';
+    const rng = a => a.length > 1 ? ` <span class="t-m">(בין ${hm(Math.min(...a))} ל־${hm(Math.max(...a))})</span>` : '';
     const tip = `<b>${esc(r.e)}</b><br>הגעה טיפוסית ${hm(r.inMed)}${rng(r.ins)}<br>יציאה טיפוסית ${hm(r.outMed)}${rng(r.outs)}<br>יום ממוצע ${dur(r.avgDay)} שעות · ${r.full} ימים מלאים`;
     s += `<g class="row${STATE.emp===r.e?' sel':''}" data-emp="${esc(r.e)}"${tipAttr(tip)}><rect class="hit" x="0" y="${y-rowH/2}" width="${W}" height="${rowH}" rx="6"/>`;
     s += rtlText(W-6, y, 'lbl', r.e, on?'':' opacity=".55"');
@@ -912,7 +1079,7 @@ function compute(){
   STATS = D.emps.map(e => empStats(D, PDAYS, e)).filter(s => s.possible > 0 || s.present > 0);
   if (STATE.emp && !STATS.some(s => s.e === STATE.emp)) STATE.emp = '';
 }
-function renderCharts(){ renderBars(); renderHeat(); renderDaily(); renderWeekly(); renderWeekday(); renderArr(); }
+function renderCharts(){ renderBars(); renderHeat(); renderDaily(); renderWeekly(); renderWeekday(); renderTrend(); renderArr(); }
 function renderAll(){
   compute();
   const one = !!STATE.emp;
@@ -936,10 +1103,10 @@ function showMode(hasData){
 }
 function showEmpty(){
   STATE.data = null; STATE.book = null; STATE.emp = '';
-  $('#title').textContent = 'נוכחות מבוגרים';
+  $('#title').textContent = 'נוכחות יציר כפיים';
   $('#eyebrow').textContent = 'כרטיס נוכחות חודשי';
   $('#clearEmp').hidden = true;
-  document.title = 'נוכחות מבוגרים';
+  document.title = APP_TITLE;
   $('#meta').innerHTML = '<span>עדיין לא נטען קובץ</span>';
   showMode(false);
 }
