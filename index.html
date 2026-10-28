@@ -1,0 +1,1030 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>נוכחות מבוגרים</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Hebrew:wght@400;500;600&family=Rubik:wght@500;600;700&display=swap">
+<style>
+/* Layout: a punch-card header band with a perforated edge, a sticky filter strip, then a 12-col grid of panels — summary first, detail below. */
+:root{
+  --bg:#f2f4f7; --surface:#fcfcfd; --ink:#101826; --ink-2:#4b5565; --muted:#7f8794; --line:#e2e5ea; --axis:#c4c9d1;
+  --band:#1c3d8f; --band-ink:#f4f6fb; --band-ink-2:#b9c6ea;
+  --accent:#2453c7; --accent-ink:#ffffff; --accent-soft:#e4ebfb; --hover:rgba(36,83,199,.06);
+  --s1:#2a78d6; --s2:#eb6834; --bar-mute:#d3d8e0; --range:#d6dfee;
+  --h1:#cde2fb; --h2:#9ec5f4; --h3:#6da7ec; --h4:#3987e5; --h5:#256abf; --h6:#184f95;
+  --empty:#e9ecf0; --note:#d6dae1;
+  --warn:#fab219; --serious:#ec835a; --crit:#d03b3b; --good:#0ca30c;
+  --warn-soft:#fdf2d6; --crit-soft:#fae0e0; --good-soft:#e1f3e1; --good-ink:#006300;
+  --font-d:"Rubik","Segoe UI",system-ui,sans-serif;
+  --font-b:"IBM Plex Sans Hebrew","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d1015; --surface:#161a21; --ink:#edf0f4; --ink-2:#b5bcc7; --muted:#8a919c; --line:#252b34; --axis:#3a414c;
+  --band:#17295a; --band-ink:#eef2fb; --band-ink-2:#9fb0dc;
+  --accent:#7ea2ff; --accent-ink:#0d1015; --accent-soft:#1e2a48; --hover:rgba(126,162,255,.08);
+  --s1:#3987e5; --s2:#d95926; --bar-mute:#2f3640; --range:#26354f;
+  --h1:#0d366b; --h2:#104281; --h3:#184f95; --h4:#256abf; --h5:#3987e5; --h6:#6da7ec;
+  --empty:#1f242c; --note:#2e343e;
+  --warn-soft:#3a2e10; --crit-soft:#3b1818; --good-soft:#13301a; --good-ink:#0ca30c;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1015; --surface:#161a21; --ink:#edf0f4; --ink-2:#b5bcc7; --muted:#8a919c; --line:#252b34; --axis:#3a414c;
+  --band:#17295a; --band-ink:#eef2fb; --band-ink-2:#9fb0dc;
+  --accent:#7ea2ff; --accent-ink:#0d1015; --accent-soft:#1e2a48; --hover:rgba(126,162,255,.08);
+  --s1:#3987e5; --s2:#d95926; --bar-mute:#2f3640; --range:#26354f;
+  --h1:#0d366b; --h2:#104281; --h3:#184f95; --h4:#256abf; --h5:#3987e5; --h6:#6da7ec;
+  --empty:#1f242c; --note:#2e343e;
+  --warn-soft:#3a2e10; --crit-soft:#3b1818; --good-soft:#13301a; --good-ink:#0ca30c;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-b);font-size:14px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.app{min-height:100%}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--font-d);text-wrap:balance;margin:0}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* header band */
+.band{background:var(--band);color:var(--band-ink)}
+.band-in{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end;justify-content:space-between;padding-block:28px 22px}
+.eyebrow{font-size:12px;letter-spacing:.08em;color:var(--band-ink-2);font-weight:500}
+.band h1{font-size:clamp(28px,4.4vw,42px);font-weight:700;line-height:1.1}
+.titlerow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-top:4px}
+.clearemp{background:color-mix(in srgb,var(--band-ink) 12%,transparent);color:var(--band-ink);border:0;border-radius:999px;padding:4px 12px;font-size:13px;cursor:pointer}
+.clearemp:hover{background:color-mix(in srgb,var(--band-ink) 20%,transparent)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;color:var(--band-ink-2);font-size:13px}
+.meta b{color:var(--band-ink);font-weight:500}
+.meta span+span::before{content:"";display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--band-ink-2);opacity:.6;margin-inline-end:14px;vertical-align:middle}
+.actions{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:8px;padding:9px 16px;font-weight:500;cursor:pointer;border:1px solid transparent;font-size:14px;white-space:nowrap}
+.btn.primary{background:var(--band-ink);color:var(--band)}
+.btn.primary:hover{filter:brightness(.95)}
+.btn.ghost{background:transparent;color:var(--band-ink);border-color:color-mix(in srgb,var(--band-ink-2) 55%,transparent)}
+.btn.ghost:hover{background:color-mix(in srgb,var(--band-ink) 10%,transparent)}
+.btn svg{width:16px;height:16px}
+.perf{height:12px;background:radial-gradient(circle,var(--bg) 3.6px,transparent 4.2px) 9px 6px/18px 12px repeat-x,var(--band);background-position:center}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* help + status */
+.help{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:24px}
+.help h3{font-size:15px;font-weight:600;margin-bottom:8px}
+.help ul{margin:0;padding-inline-start:18px;color:var(--ink-2);display:grid;gap:4px}
+.mini{overflow-x:auto}
+.mini table{border-collapse:collapse;font-size:12px;min-width:340px}
+.mini td{border:1px solid var(--line);padding:4px 8px;text-align:center;white-space:nowrap;color:var(--ink-2)}
+.mini td.h{background:var(--accent-soft);color:var(--ink);font-weight:500}
+.mini td.n{text-align:start;color:var(--ink);font-weight:500}
+.status{margin-top:16px;border-radius:10px;padding:12px 16px;display:flex;gap:10px;align-items:flex-start;font-size:14px}
+.status.err{background:var(--crit-soft)}
+.status.ok{background:var(--good-soft)}
+.status.load{background:var(--accent-soft)}
+.status .ic{flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:12px;color:#fff;margin-top:1px}
+.status.err .ic{background:var(--crit)} .status.ok .ic{background:var(--good)} .status.load .ic{background:var(--accent);color:var(--accent-ink)}
+.welcome{margin-top:20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:48px 20px;border:2px dashed var(--axis);border-radius:16px;background:var(--surface);cursor:pointer;transition:border-color .15s,background .15s}
+.welcome:hover{border-color:var(--accent);background:color-mix(in srgb,var(--accent-soft) 45%,var(--surface))}
+.w-ic{width:56px;height:56px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin-bottom:6px}
+.w-ic svg{width:28px;height:28px}
+.w-t{font-family:var(--font-d);font-size:22px;font-weight:600;text-wrap:balance}
+.w-s{color:var(--ink-2)}
+.w-btn{margin-top:10px;background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:9px 20px;font-weight:500}
+.w-p{margin-top:8px;font-size:12.5px;color:var(--muted)}
+.linkbtn{background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;cursor:pointer}
+
+/* filter strip */
+.filters{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.filters-in{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding-block:12px}
+.flabel{font-size:12px;color:var(--muted);letter-spacing:.04em}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;padding-block:2px;max-width:100%}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;cursor:pointer;white-space:nowrap;font-size:13px;display:inline-flex;gap:6px;align-items:baseline}
+.chip small{color:var(--muted);font-size:11px}
+.chip:hover{border-color:var(--axis)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip[aria-pressed="true"] small{color:inherit;opacity:.8}
+.fgroup{display:flex;align-items:center;gap:8px;min-width:0}
+.fgroup.grow{flex:1 1 380px}
+select{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 10px;min-width:150px;cursor:pointer}
+
+/* grid + panels */
+main{padding-block:20px 48px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.panel{grid-column:span 12;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px 20px;min-width:0}
+.span-7{grid-column:span 7}.span-5{grid-column:span 5}.span-6{grid-column:span 6}
+@media (max-width:900px){.span-7,.span-5,.span-6{grid-column:span 12}.help{grid-template-columns:1fr}}
+.phead{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.phead h2{font-size:17px;font-weight:600}
+.phead p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.seg{display:inline-flex;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:2px;gap:2px;flex-wrap:wrap}
+.seg button{border:0;background:transparent;border-radius:6px;padding:4px 10px;font-size:12.5px;cursor:pointer;color:var(--ink-2)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08);font-weight:500}
+
+/* KPI tiles */
+.kpis{grid-column:span 12;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:12px}
+@media (max-width:1150px){.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:640px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tlab{fill:var(--ink);font-size:12px;font-weight:500;font-variant-numeric:tabular-nums}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.kpi .k{font-size:13px;color:var(--ink-2)}
+.kpi .v{font-family:var(--font-d);font-size:30px;font-weight:600;line-height:1.2;letter-spacing:-.01em}
+.kpi .v small{font-size:15px;font-weight:500;color:var(--ink-2);margin-inline-start:4px}
+.kpi .s{font-size:12.5px;color:var(--muted)}
+.kpi.attn{background:var(--warn-soft);border-color:transparent}
+.kpi.attn .k::before{content:"!";display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:var(--warn);color:#0b0b0b;font-size:11px;font-weight:700;margin-inline-end:6px;vertical-align:-2px}
+
+/* charts */
+.chart{width:100%;min-width:0;position:relative}
+.chart svg{display:block;overflow:visible;direction:ltr}
+.scroll{overflow-x:auto;scrollbar-width:thin}
+svg text{font-family:var(--font-b)}
+.lbl{fill:var(--ink);font-size:13px}
+.val{fill:var(--ink-2);font-size:12px;font-variant-numeric:tabular-nums}
+.tick{fill:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}
+.xl{fill:var(--ink-2);font-size:12px}
+.wk{fill:var(--ink-2);font-size:11.5px;font-weight:500}
+.grid{stroke:var(--line);stroke-width:1}
+.base{stroke:var(--axis);stroke-width:1}
+.avg{stroke:var(--ink-2);stroke-width:1;opacity:.7}
+.hit{fill:transparent}
+.mk-s1{fill:var(--s1)} .mk-s2{fill:var(--s2)} .mk-mute{fill:var(--bar-mute)}
+.rng{fill:var(--range)}
+.dot-in{fill:var(--s1);stroke:var(--surface);stroke-width:1.5;fill-opacity:.75}
+.dot-out{fill:var(--s2);stroke:var(--surface);stroke-width:1.5;fill-opacity:.75}
+g.row,g.col,.cell{cursor:pointer;outline:none}
+g.row:hover .hit,g.row:focus-visible .hit,g.col:hover .hit,g.col:focus-visible .hit{fill:var(--hover)}
+g.row.sel .hit{fill:var(--accent-soft)}
+.dim{opacity:.35}
+.h1{fill:var(--h1)}.h2{fill:var(--h2)}.h3{fill:var(--h3)}.h4{fill:var(--h4)}.h5{fill:var(--h5)}.h6{fill:var(--h6)}
+.c-warn{fill:var(--warn)} .c-crit{fill:var(--crit)} .c-abs{fill:var(--empty)} .c-note{fill:var(--note)}
+.cell:hover rect,.cell:focus-visible rect{stroke:var(--ink);stroke-width:1.5}
+.g-dark{fill:#0b0b0b;font-size:12px;font-weight:700;pointer-events:none}
+.g-light{fill:#fff;font-size:13px;font-weight:700;pointer-events:none}
+.hatch-bg{fill:var(--empty)} .hatch-ln{stroke:var(--axis);stroke-width:2}
+.closed-t{fill:var(--ink-2);font-size:11.5px;font-weight:500}
+.namebtn{cursor:pointer}
+.namebtn:hover .lbl{text-decoration:underline}
+
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;font-size:12.5px;color:var(--ink-2);align-items:center}
+.legend .it{display:inline-flex;align-items:center;gap:6px}
+.sw{width:14px;height:14px;border-radius:3px;display:inline-grid;place-items:center;font-size:10px;font-weight:700;flex:none}
+.sw.dot{border-radius:50%;width:10px;height:10px}
+.ramp{display:inline-flex;gap:2px;align-items:center}
+.ramp i{width:22px;height:12px;display:block;border-radius:2px}
+.ramp-l{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:2px}
+.hatch-sw{background:repeating-linear-gradient(45deg,var(--axis) 0 2px,var(--empty) 2px 5px)}
+
+/* issues */
+.ichips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px 3px 8px;font-size:12.5px;background:var(--bg);color:var(--ink);white-space:nowrap;border:1px solid var(--line)}
+.pill i{font-style:normal;width:16px;height:16px;border-radius:50%;display:inline-grid;place-items:center;font-size:10.5px;font-weight:700;flex:none}
+.i-warn{background:var(--warn);color:#0b0b0b}
+.i-crit{background:var(--crit);color:#fff}
+.i-serious{background:var(--serious);color:#0b0b0b}
+.i-none{background:var(--muted);color:#fff}
+.i-good{background:var(--good);color:#fff}
+.ilist{list-style:none;margin:0;padding:0;max-height:380px;overflow-y:auto;scrollbar-width:thin}
+.ilist li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:9px 2px;border-top:1px solid var(--line)}
+.ilist li:first-child{border-top:0}
+.ilist .who{font-weight:500;min-width:0}
+.ilist .who button{background:none;border:0;padding:0;cursor:pointer;font-weight:500}
+.ilist .who button:hover{text-decoration:underline}
+.ilist .det{grid-column:2/4;color:var(--muted);font-size:12.5px;margin-top:-4px}
+.ilist .when{color:var(--ink-2);font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.empty-ok{display:flex;gap:10px;align-items:center;padding:20px 4px;color:var(--ink-2)}
+
+/* table */
+.tablewrap{overflow-x:auto}
+table.data{width:100%;border-collapse:collapse;font-size:13.5px;min-width:720px}
+table.data th{font-weight:500;color:var(--muted);font-size:12.5px;text-align:start;padding:0 10px 8px;border-bottom:1px solid var(--axis);white-space:nowrap}
+table.data th button{background:none;border:0;padding:0;cursor:pointer;color:inherit;font:inherit;display:inline-flex;gap:4px;align-items:center}
+table.data th button:hover{color:var(--ink)}
+table.data th[aria-sort] button{color:var(--ink)}
+table.data td{padding:9px 10px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums;white-space:nowrap}
+table.data tr{cursor:pointer}
+table.data tbody tr:hover td{background:var(--hover)}
+table.data tr.sel td{background:var(--accent-soft)}
+table.data td.name{font-weight:500}
+table.data.logt{min-width:480px}
+table.data.logt tr{cursor:default}
+table.data.logt tr.off td{color:var(--muted)}
+.meter{display:inline-flex;align-items:center;gap:8px}
+.meter span{display:block;width:64px;height:6px;border-radius:3px;background:var(--h1);overflow:hidden}
+.meter span i{display:block;height:100%;background:var(--s1);border-radius:3px}
+.miss{display:inline-flex;align-items:center;gap:6px}
+.muted{color:var(--muted)}
+
+/* tooltip + drop */
+.tip{position:fixed;z-index:50;pointer-events:none;background:var(--ink);color:var(--surface);border-radius:8px;padding:8px 11px;font-size:12.5px;line-height:1.55;max-width:260px;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.tip b{font-weight:600}
+.tip .t-m{opacity:.75}
+.drop{position:fixed;inset:0;z-index:60;background:color-mix(in srgb,var(--band) 88%,transparent);display:grid;place-items:center;color:var(--band-ink);font-family:var(--font-d);font-size:24px;font-weight:600;padding:24px;text-align:center}
+.drop div{border:2px dashed var(--band-ink-2);border-radius:16px;padding:48px 40px}
+.foot{grid-column:span 12;color:var(--muted);font-size:12.5px;text-align:center;padding-top:4px}
+@media (max-width:520px){.kpi .v{font-size:26px}.panel{padding:16px 14px}}
+@media (prefers-reduced-motion:no-preference){.chart svg{animation:fade .35s ease-out both}@keyframes fade{from{opacity:.4}to{opacity:1}}}
+</style>
+</head>
+<body>
+
+
+<div class="app" dir="rtl">
+  <header class="band">
+    <div class="wrap band-in">
+      <div>
+        <div class="eyebrow" id="eyebrow">כרטיס נוכחות חודשי</div>
+        <div class="titlerow"><h1 id="title">נוכחות מבוגרים</h1><button class="clearemp" id="clearEmp" hidden>× כל העובדים</button></div>
+        <div class="meta" id="meta"></div>
+      </div>
+      <div class="actions">
+        <label class="btn primary" for="file">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 11V2.5M4.5 6 8 2.5 11.5 6M2.5 10.5v2a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-2"/></svg>
+          העלאת קובץ אקסל
+        </label>
+        <input id="file" class="vh" type="file" accept=".xlsx,.xls,.xlsm,.csv">
+        <button class="btn ghost" id="helpBtn" aria-expanded="false" aria-controls="help">מבנה הקובץ</button>
+      </div>
+    </div>
+    <div class="perf" aria-hidden="true"></div>
+  </header>
+
+  <div class="wrap">
+    <section class="help" id="help" hidden>
+      <div>
+        <h3>איזה קובץ אפשר להעלות</h3>
+        <ul>
+          <li>כל שבוע הוא בלוק: שורת תאריכים (למשל <span class="tnum">א' 28.06.26</span>), מתחתיה שורת "כניסה / יציאה", ואחריה שורה לכל עובד.</li>
+          <li>שמות העובדים בעמודה שלפני התאריך הראשון, בדרך כלל עמודה A.</li>
+          <li>שעות בפורמט שעה של אקסל, או כטקסט כמו <span class="tnum">08:05</span>.</li>
+          <li>יום סגור: תא ממוזג עם טקסט על פני כל העובדים, למשל "צום תשעה באב".</li>
+          <li>אם יש כמה גיליונות, כולם נקראים.</li>
+          <li>הקובץ נקרא רק בדפדפן שלך ולא נשלח לשום מקום.</li>
+        </ul>
+      </div>
+      <div class="mini">
+        <h3>דוגמה</h3>
+        <table>
+          <tr><td></td><td class="h" colspan="2">א' 28.06.26</td><td class="h" colspan="2">ב' 29.06.26</td></tr>
+          <tr><td></td><td>כניסה</td><td>יציאה</td><td>כניסה</td><td>יציאה</td></tr>
+          <tr><td class="n">ישראל ישראלי</td><td class="tnum">08:24</td><td class="tnum">12:07</td><td class="tnum">08:05</td><td class="tnum">11:01</td></tr>
+          <tr><td class="n">ישראלה ישראלי</td><td class="tnum">08:24</td><td class="tnum">13:06</td><td></td><td></td></tr>
+        </table>
+      </div>
+    </section>
+    <div id="status" hidden></div>
+    <label class="welcome" id="welcome" for="file" hidden>
+      <span class="w-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span>
+      <span class="w-t">העלו קובץ נוכחות כדי להתחיל</span>
+      <span class="w-s">גררו לכאן קובץ אקסל, או לחצו לבחירת קובץ מהמחשב</span>
+      <span class="w-btn">בחירת קובץ</span>
+      <span class="w-p">הקובץ נקרא רק בדפדפן שלך. שום נתון לא נשלח לשרת ולא נשמר באתר.</span>
+    </label>
+  </div>
+
+  <div class="filters" id="filters">
+    <div class="wrap filters-in">
+      <div class="fgroup grow"><span class="flabel">תקופה</span><div class="chips" id="periods" role="group" aria-label="בחירת תקופה"></div></div>
+      <div class="fgroup"><label class="flabel" for="emp">עובד</label><select id="emp"></select></div>
+    </div>
+  </div>
+
+  <main class="wrap" id="main">
+    <section class="kpis" id="kpis" aria-label="סיכום"></section>
+
+    <section class="panel span-7" id="pBars">
+      <div class="phead">
+        <div><h2>לפי עובד</h2><p id="barsSub">לחיצה על עובד מתמקדת בו בכל הגרפים</p></div>
+        <div class="seg" id="metric" role="group" aria-label="מדד">
+          <button data-m="hours" aria-pressed="true">סה״כ שעות</button>
+          <button data-m="days" aria-pressed="false">ימי נוכחות</button>
+          <button data-m="pct" aria-pressed="false">אחוז נוכחות</button>
+          <button data-m="avg" aria-pressed="false">ממוצע ליום</button>
+        </div>
+      </div>
+      <div class="chart" id="bars"></div>
+    </section>
+
+    <section class="panel span-5" id="pIssues">
+      <div class="phead"><div><h2>בדיקת נתונים</h2><p>החתמות חסרות, ימים חריגים ועובדים בלי נוכחות</p></div></div>
+      <div id="issues"></div>
+    </section>
+
+    <section class="panel">
+      <div class="phead"><div><h2>מפת נוכחות</h2><p>כל משבצת היא יום עבודה של עובד. ככל שהצבע כהה יותר, היום היה ארוך יותר.</p></div></div>
+      <div class="chart scroll" id="heat"></div>
+      <div class="legend" id="heatLegend"></div>
+    </section>
+
+    <section class="panel" id="pDaily">
+      <div class="phead"><div><h2>כמה עובדים הגיעו בכל יום</h2><p id="dailySub"></p></div></div>
+      <div class="chart" id="daily"></div>
+    </section>
+
+    <section class="panel span-6">
+      <div class="phead"><div><h2 id="weeklyTitle">שעות לפי שבוע</h2><p id="weeklySub"></p></div></div>
+      <div class="chart" id="weekly"></div>
+    </section>
+
+    <section class="panel span-6">
+      <div class="phead"><div><h2 id="wdTitle">לפי יום בשבוע</h2><p id="wdSub"></p></div></div>
+      <div class="chart" id="weekday"></div>
+    </section>
+
+    <section class="panel">
+      <div class="phead">
+        <div><h2 id="arrTitle">יום טיפוסי לכל עובד</h2><p id="arrSub"></p></div>
+      </div>
+      <div class="chart" id="arr"></div>
+    </section>
+
+    <section class="panel">
+      <div class="phead"><div><h2 id="tblTitle">טבלת עובדים</h2><p id="tblSub"></p></div></div>
+      <div class="tablewrap" id="table"></div>
+    </section>
+
+    <p class="foot">הנתונים מחושבים בדפדפן מתוך הקובץ שנטען. שעות נספרות רק בימים שיש בהם גם כניסה וגם יציאה.</p>
+  </main>
+
+  <div class="tip" id="tip" hidden></div>
+  <div class="drop" id="drop" hidden><div>שחררו כאן את קובץ הנוכחות</div></div>
+</div>
+
+<script>
+const LS_KEY = 'nm-attendance-book-v1';
+const WD = ['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
+const WD_FULL = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2,'0');
+const hm = m => m == null ? '—' : `${pad(Math.floor(m/60))}:${pad(Math.round(m)%60)}`;
+const dur = h => { if (h == null) return '—'; const m = Math.round(h*60); return `${Math.floor(m/60)}:${pad(m%60)}`; };
+const num1 = v => v.toLocaleString('he-IL',{minimumFractionDigits:1,maximumFractionDigits:1});
+const numN = v => v.toLocaleString('he-IL',{maximumFractionDigits:1});
+const ddmm = d => `${pad(d.getDate())}.${pad(d.getMonth()+1)}`;
+const ddmmyy = d => `${ddmm(d)}.${String(d.getFullYear()).slice(2)}`;
+const dayName = d => `${WD[d.getDay()]} ${ddmm(d)}`;
+const dkey = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const mean = a => a.length ? a.reduce((x,y)=>x+y,0)/a.length : null;
+const median = a => { if (!a.length) return null; const s=[...a].sort((x,y)=>x-y), m=s.length>>1; return s.length%2 ? s[m] : (s[m-1]+s[m])/2; };
+
+/* ---------- parsing ---------- */
+const DATE_RE = /(\d{1,2})[.\/\-](\d{1,2})[.\/\-](\d{2,4})/;
+function headerDate(v){
+  if (typeof v === 'string'){ const m = v.match(DATE_RE); if (m){ let y=+m[3]; if (y<100) y+=2000; const d=new Date(y,+m[2]-1,+m[1]); if (!isNaN(d) && d.getDate()===+m[1]) return d; } }
+  if (v instanceof Date && !isNaN(v)) return new Date(v.getFullYear(),v.getMonth(),v.getDate());
+  if (typeof v === 'number' && Number.isInteger(v) && v>30000 && v<80000){ const d=new Date(Math.round((v-25569)*864e5)); return new Date(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate()); }
+  return null;
+}
+function cellTime(v){
+  if (v == null || v === '' || v === 0) return {t:null};
+  if (typeof v === 'number'){ const f = v % 1; if (f === 0) return {t:null}; return {t:Math.round(f*1440) % 1440}; }
+  if (v instanceof Date) return {t:v.getHours()*60+v.getMinutes()};
+  const s = String(v).trim(); if (!s) return {t:null};
+  const m = s.match(/^(\d{1,2})[:.](\d{2})(?::\d{2})?$/);
+  if (m && +m[1] < 24 && +m[2] < 60) return {t:+m[1]*60 + +m[2]};
+  return {t:null, text:s};
+}
+function parseBook(book){
+  const days = new Map(), cells = new Map(), emps = [], empSet = new Set(), weeks = [];
+  for (const sh of book.sheets){
+    const rows = sh.rows || [];
+    const noteAt = new Map();
+    for (const [r1,c1,r2,c2] of (sh.merges || [])){
+      const ct = cellTime((rows[r1]||[])[c1]);
+      if (ct.text) for (let r=r1; r<=r2; r++) for (let c=c1; c<=c2; c++) noteAt.set(r+','+c, ct.text);
+    }
+    let r = 0;
+    while (r < rows.length){
+      const row = rows[r] || [];
+      const dcols = [];
+      for (let c=0; c<row.length; c++){ const d = headerDate(row[c]); if (d) dcols.push({c,d}); }
+      if (!dcols.length || dcols[0].c === 0){ r++; continue; }
+      const nameCol = dcols[0].c - 1;
+      const sub = rows[r+1] || [];
+      const hasSub = sub.some(v => typeof v === 'string' && /כניס|יציא|^in$|^out$/i.test(v.trim()));
+      const pairs = dcols.map((dc,i) => {
+        const end = i+1 < dcols.length ? dcols[i+1].c-1 : dc.c+1;
+        let inC = dc.c, outC = Math.min(dc.c+1, end);
+        if (hasSub) for (let c=dc.c; c<=end; c++){ const t = String(sub[c] ?? ''); if (/כניס|^in$/i.test(t)) inC = c; else if (/יציא|^out$/i.test(t)) outC = c; }
+        return {d:dc.d, inC, outC, key:dkey(dc.d)};
+      });
+      const week = {idx:weeks.length, keys:[], roster:new Set()};
+      weeks.push(week);
+      for (const p of pairs){
+        if (!days.has(p.key)) days.set(p.key, {key:p.key, date:p.d, week:week.idx, closed:false, note:'', has:false});
+        week.keys.push(p.key);
+      }
+      let rr = r + (hasSub ? 2 : 1);
+      for (; rr < rows.length; rr++){
+        const row2 = rows[rr] || [];
+        if (row2.some((v,c) => c > nameCol && headerDate(v))) break;
+        const raw = row2[nameCol];
+        const name = raw == null ? '' : String(raw).trim();
+        if (!name || typeof raw === 'number') continue;
+        if (!empSet.has(name)){ empSet.add(name); emps.push(name); }
+        week.roster.add(name);
+        for (const p of pairs){
+          const a = cellTime(row2[p.inC]), b = cellTime(row2[p.outC]);
+          const note = a.text || b.text || (row2[p.inC] == null && noteAt.get(rr+','+p.inC)) || (row2[p.outC] == null && noteAt.get(rr+','+p.outC)) || '';
+          if (a.t == null && b.t == null && !note) continue;
+          const k = name+'|'+p.key;
+          const c = cells.get(k) || {in:null, out:null, note:''};
+          if (a.t != null) c.in = a.t;
+          if (b.t != null) c.out = b.t;
+          if (note) c.note = note;
+          cells.set(k, c);
+          if (a.t != null || b.t != null) days.get(p.key).has = true;
+        }
+      }
+      r = rr;
+    }
+  }
+  if (!days.size) throw new Error('nodates');
+  if (!emps.length) throw new Error('noemps');
+  for (const day of days.values()){
+    const w = weeks[day.week]; let n = 0, noted = 0, txt = '';
+    for (const e of w.roster){ n++; const c = cells.get(e+'|'+day.key); if (c && c.note && c.in == null && c.out == null){ noted++; txt = txt || c.note; } }
+    if (!day.has && noted && noted >= n*0.5){ day.closed = true; day.note = txt; }
+  }
+  const dayList = [...days.values()].sort((a,b) => a.date - b.date);
+  // renumber weeks chronologically, dropping empty ones
+  const order = [...new Set(dayList.map(d => d.week))];
+  const wk = order.map((old,i) => {
+    const ds = dayList.filter(d => d.week === old);
+    return {idx:i, roster:weeks[old].roster, days:ds, label:`${ddmm(ds[0].date)}–${ddmm(ds[ds.length-1].date)}`};
+  });
+  dayList.forEach(d => d.week = order.indexOf(d.week));
+  return {file:book.file, emps, days:dayList, weeks:wk, cells};
+}
+
+/* ---------- derived data ---------- */
+const STATE = {data:null, book:null, period:'all', emp:'', metric:'hours', sort:{k:'hours', dir:-1}, isSample:true};
+let PDAYS = [], WORK = [], STATS = [];
+function status(D, e, d){
+  if (d.closed) return 'closed';
+  if (!D.weeks[d.week].roster.has(e)) return 'na';
+  const c = D.cells.get(e+'|'+d.key);
+  if (c && (c.in != null || c.out != null)){
+    if (c.in != null && c.out != null) return c.out > c.in ? 'full' : 'bad';
+    return 'partial';
+  }
+  if (c && c.note) return 'note';
+  return d.has ? 'absent' : 'nodata';
+}
+const PRESENT = new Set(['full','partial','bad']);
+function empStats(D, days, e){
+  const s = {e, present:0, possible:0, hours:0, full:0, partial:0, bad:0, ins:[], outs:[]};
+  for (const d of days){
+    const st = status(D,e,d);
+    if (st === 'na' || st === 'closed' || st === 'nodata' || st === 'note') continue;
+    s.possible++;
+    if (st === 'absent') continue;
+    s.present++;
+    const c = D.cells.get(e+'|'+d.key);
+    if (c.in != null) s.ins.push(c.in);
+    if (c.out != null) s.outs.push(c.out);
+    if (st === 'full'){ s.full++; s.hours += (c.out-c.in)/60; }
+    else if (st === 'partial') s.partial++; else s.bad++;
+  }
+  s.pct = s.possible ? s.present/s.possible : null;
+  s.avgDay = s.full ? s.hours/s.full : null;
+  s.inMed = median(s.ins); s.outMed = median(s.outs); s.inAvg = mean(s.ins);
+  s.missing = s.partial + s.bad;
+  return s;
+}
+const presentOn = (D,d) => D.emps.filter(e => PRESENT.has(status(D,e,d)));
+
+/* ---------- svg helpers ---------- */
+let UID = 0;
+function niceStep(max, n, int){ const raw = max/n || 1; const p = Math.pow(10, Math.floor(Math.log10(raw))); const f = raw/p; let st = (f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10)*p; if (int) st = Math.max(1, Math.round(st)); return st; }
+function vbar(x, yB, w, h){ if (h <= 0) return ''; const r = Math.min(4, w/2, h); const yT = yB-h; return `M${x},${yB}V${yT+r}A${r},${r} 0 0 1 ${x+r},${yT}H${x+w-r}A${r},${r} 0 0 1 ${x+w},${yT+r}V${yB}Z`; }
+function hbarL(xR, y, len, h){ if (len <= 0) return ''; const r = Math.min(4, len, h/2); const xL = xR-len; return `M${xR},${y}H${xL+r}A${r},${r} 0 0 0 ${xL},${y+r}V${y+h-r}A${r},${r} 0 0 0 ${xL+r},${y+h}H${xR}Z`; }
+const svgOpen = (W,H,label) => `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(label)}">`;
+const hatchDef = id => `<defs><pattern id="${id}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="hatch-bg"/><line x1="1" y1="0" x2="1" y2="6" class="hatch-ln"/></pattern></defs>`;
+const tipAttr = html => ` data-tip="${esc(html)}" tabindex="0"`;
+const rtlText = (x,y,cls,txt,extra='') => `<text x="${x}" y="${y}" class="${cls}" direction="rtl" text-anchor="start" dominant-baseline="central"${extra}>${esc(txt)}</text>`;
+
+/* ---------- render: header, filters ---------- */
+function renderMeta(){
+  $('#title').textContent = STATE.emp || 'נוכחות מבוגרים';
+  $('#eyebrow').textContent = STATE.emp ? 'נוכחות מבוגרים · כרטיס עובד' : 'כרטיס נוכחות חודשי';
+  $('#clearEmp').hidden = !STATE.emp;
+  document.title = STATE.emp ? `${STATE.emp} · נוכחות מבוגרים` : 'נוכחות מבוגרים';
+  const D = STATE.data, f = D.days[0].date, l = D.days[D.days.length-1].date;
+  const work = D.days.filter(d => !d.closed && d.has).length;
+  $('#meta').innerHTML = `<span><b>${esc((D.file || 'קובץ ללא שם').replace(/\.(xlsx|xlsm|xls|csv)$/i,''))}</b></span><span class="tnum">${ddmmyy(f)} – ${ddmmyy(l)}</span><span>${D.emps.length} עובדים ברשימה</span><span>${work} ימי פעילות</span>`;
+}
+function renderFilters(){
+  const D = STATE.data;
+  let h = `<button class="chip" data-p="all" aria-pressed="${STATE.period==='all'}">כל התקופה</button>`;
+  D.weeks.forEach(w => { h += `<button class="chip" data-p="${w.idx}" aria-pressed="${STATE.period===String(w.idx)}">שבוע ${w.idx+1} <small class="tnum">${w.label}</small></button>`; });
+  $('#periods').innerHTML = h;
+  const opts = STATS.map(s => s.e);
+  $('#emp').innerHTML = `<option value="">כל העובדים</option>` + opts.map(e => `<option value="${esc(e)}"${e===STATE.emp?' selected':''}>${esc(e)}</option>`).join('');
+}
+
+/* ---------- KPIs ---------- */
+function renderKPIs(){
+  const D = STATE.data, tiles = [];
+  const closed = PDAYS.filter(d => d.closed).length;
+  if (!STATE.emp){
+    const act = STATS.filter(s => s.present > 0);
+    const hours = STATS.reduce((a,s) => a+s.hours, 0), full = STATS.reduce((a,s) => a+s.full, 0);
+    const pres = STATS.reduce((a,s) => a+s.present, 0), poss = STATS.reduce((a,s) => a+s.possible, 0);
+    const heads = WORK.map(d => presentOn(D,d).length);
+    const ins = STATS.flatMap(s => s.ins);
+    const miss = STATS.reduce((a,s) => a+s.missing, 0), missE = STATS.filter(s => s.missing).length;
+    tiles.push({k:'סה״כ שעות', v:num1(hours), s:`ב-${WORK.length} ימי פעילות${closed?` · ${closed} סגור`:''}`});
+    tiles.push({k:'ממוצע ליום עבודה', v:dur(full?hours/full:null), u:'שעות', s:'לעובד, בימים עם כניסה ויציאה'});
+    tiles.push({k:'עובדים ביום, בממוצע', v:heads.length?numN(mean(heads)):'—', s:`מתוך ${act.length} שהגיעו לפחות פעם אחת`});
+    tiles.push({k:'אחוז נוכחות', v:poss?Math.round(pres/poss*100)+'%':'—', s:`${pres} ימי נוכחות מתוך ${poss} אפשריים`});
+    const outs = STATS.flatMap(s => s.outs);
+    tiles.push({k:'שעת הגעה טיפוסית', v:hm(median(ins)), s:`ממוצע ${hm(mean(ins))}`});
+    tiles.push({k:'שעת יציאה טיפוסית', v:hm(median(outs)), s:`ממוצע ${hm(mean(outs))}`});
+    tiles.push({k:'החתמות חסרות', v:String(miss), s:miss?`אצל ${missE} עובדים`:'כל הימים שלמים', attn:miss>0});
+  } else {
+    const s = STATS.find(x => x.e === STATE.emp);
+    tiles.push({k:'ימי נוכחות', v:`${s.present}`, u:`/ ${s.possible}`, s:'ימים שהגיע מתוך ימי עבודה'});
+    tiles.push({k:'אחוז נוכחות', v:s.pct!=null?Math.round(s.pct*100)+'%':'—', s:WORK.length?`בתקופה של ${WORK.length} ימי פעילות`:''});
+    tiles.push({k:'סה״כ שעות', v:num1(s.hours), s:`מ-${s.full} ימים מלאים`});
+    tiles.push({k:'ממוצע ליום', v:dur(s.avgDay), u:'שעות', s:'בימים עם כניסה ויציאה'});
+    tiles.push({k:'שעת הגעה טיפוסית', v:hm(s.inMed), s:`ממוצע ${hm(s.inAvg)}`});
+    tiles.push({k:'שעת יציאה טיפוסית', v:hm(s.outMed), s:`ממוצע ${hm(mean(s.outs))}`});
+    tiles.push({k:'החתמות חסרות', v:String(s.missing), s:s.missing?'ימים עם כניסה או יציאה בלבד':'כל הימים שלמים', attn:s.missing>0});
+  }
+  $('#kpis').innerHTML = tiles.map(t => `<div class="kpi${t.attn?' attn':''}"><div class="k">${t.k}</div><div class="v">${t.v}${t.u?`<small>${t.u}</small>`:''}</div><div class="s">${t.s}</div></div>`).join('');
+}
+
+/* ---------- bars by employee ---------- */
+const METRICS = {
+  hours:{get:s=>s.hours, fmt:v=>num1(v), unit:'שעות', aria:'סה״כ שעות לפי עובד'},
+  days:{get:s=>s.present, fmt:v=>String(v), unit:'ימים', aria:'ימי נוכחות לפי עובד'},
+  pct:{get:s=>s.pct==null?0:s.pct*100, fmt:v=>Math.round(v)+'%', unit:'', aria:'אחוז נוכחות לפי עובד'},
+  avg:{get:s=>s.avgDay||0, fmt:v=>dur(v), unit:'שעות', aria:'ממוצע שעות ליום לפי עובד'}
+};
+function empTip(s){
+  return `<b>${esc(s.e)}</b><br>${s.present} ימי נוכחות מתוך ${s.possible}${s.pct!=null?` (${Math.round(s.pct*100)}%)`:''}<br>${num1(s.hours)} שעות · ממוצע ${dur(s.avgDay)} ליום<br><span class="t-m">הגעה טיפוסית ${hm(s.inMed)}${s.missing?` · ${s.missing} החתמות חסרות`:''}</span>`;
+}
+function renderBars(){
+  if (STATE.emp) return;
+  const el = $('#bars'), W = Math.max(300, el.clientWidth), M = METRICS[STATE.metric];
+  const rows = [...STATS].sort((a,b) => M.get(b)-M.get(a) || a.e.localeCompare(b.e,'he'));
+  const rowH = 30, barH = 16, nameW = Math.min(118, W*.3), valW = 52, top = 2;
+  const H = rows.length*rowH + top*2, xR = W-nameW-10, span = xR-valW;
+  const max = STATE.metric === 'pct' ? 100 : Math.max(...rows.map(M.get), 1e-6);
+  let s = svgOpen(W, H, M.aria);
+  rows.forEach((r,i) => {
+    const y = top+i*rowH, v = M.get(r), len = v/max*span, by = y+(rowH-barH)/2;
+    const on = !STATE.emp || STATE.emp === r.e;
+    s += `<g class="row${STATE.emp===r.e?' sel':''}" data-emp="${esc(r.e)}"${tipAttr(empTip(r))}>`;
+    s += `<rect class="hit" x="0" y="${y}" width="${W}" height="${rowH}" rx="6"/>`;
+    s += rtlText(W-6, y+rowH/2, 'lbl', r.e, on?'':' opacity=".55"');
+    if (len > 0) s += `<path class="${on?'mk-s1':'mk-mute'}" d="${hbarL(xR, by, len, barH)}"/>`;
+    s += `<text class="val" x="${xR-len-6}" y="${y+rowH/2}" text-anchor="end" dominant-baseline="central">${M.fmt(v)}</text>`;
+    s += `</g>`;
+  });
+  s += `<line class="base" x1="${xR}" x2="${xR}" y1="${top}" y2="${H-top}"/>`;
+  el.innerHTML = s + '</svg>';
+}
+
+/* ---------- issues ---------- */
+function renderIssues(){
+  const D = STATE.data, list = [];
+  const pool = STATE.emp ? STATS.filter(s => s.e === STATE.emp) : STATS;
+  for (const s of pool){
+    if (s.possible > 0 && s.present === 0) list.push({t:'none', e:s.e, d:null, det:`${s.possible} ימי עבודה בלי אף החתמה`});
+    for (const d of PDAYS){
+      const st = status(D, s.e, d), c = D.cells.get(s.e+'|'+d.key);
+      if (st === 'partial') list.push({t:'miss', e:s.e, d, lab:c.in==null?'חסרה כניסה':'חסרה יציאה', det:c.in!=null?`נרשמה כניסה ב-${hm(c.in)}`:`נרשמה יציאה ב-${hm(c.out)}`});
+      else if (st === 'bad') list.push({t:'bad', e:s.e, d, det:`כניסה ${hm(c.in)}, יציאה ${hm(c.out)}`});
+      else if (st === 'full' && c.out-c.in < 45) list.push({t:'short', e:s.e, d, det:`${hm(c.in)}–${hm(c.out)}, ${c.out-c.in} דקות בלבד`});
+    }
+  }
+  const T = {miss:{lab:'החתמה חסרה', i:'i-warn', g:'!'}, bad:{lab:'יציאה לפני כניסה', i:'i-crit', g:'×'}, short:{lab:'יום קצר מ-45 דק׳', i:'i-serious', g:'↓'}, none:{lab:'ברשימה בלי נוכחות', i:'i-none', g:'?'}};
+  const el = $('#issues');
+  if (!list.length){ el.innerHTML = `<div class="empty-ok"><span class="pill"><i class="i-good">✓</i>תקין</span>לא נמצאו בעיות בנתונים בתקופה הזו.</div>`; return; }
+  list.sort((a,b) => (a.d?a.d.date:0) - (b.d?b.d.date:0));
+  const counts = {}; list.forEach(x => counts[x.t] = (counts[x.t]||0)+1);
+  let h = `<div class="ichips">` + Object.keys(T).filter(k => counts[k]).map(k => `<span class="pill"><i class="${T[k].i}">${T[k].g}</i>${T[k].lab} <b class="tnum">${counts[k]}</b></span>`).join('') + `</div><ul class="ilist">`;
+  h += list.map(x => `<li><span class="pill"><i class="${T[x.t].i}">${T[x.t].g}</i>${x.lab||T[x.t].lab}</span><span class="who"><button data-emp="${esc(x.e)}">${esc(x.e)}</button></span><span class="when">${x.d?dayName(x.d.date):''}</span><span class="det">${esc(x.det)}</span></li>`).join('');
+  el.innerHTML = h + '</ul>';
+}
+
+/* ---------- heatmap ---------- */
+const BINS = [1,2,3,4,5];
+const binOf = h => { let i = 0; while (i < BINS.length && h >= BINS[i]) i++; return i+1; };
+function renderHeat(){
+  const D = STATE.data, el = $('#heat'), Wc = Math.max(300, el.clientWidth);
+  const days = PDAYS.filter(d => d.has || d.closed);
+  const emps = STATE.emp ? [STATE.emp] : D.emps.filter(e => days.some(d => D.weeks[d.week].roster.has(e)));
+  const weeksIn = new Set(days.map(d => d.week)).size;
+  const nameW = 112, totW = 54, gap = 3, wgap = 12, headH = 56;
+  const free = Wc - nameW - totW - 20 - (weeksIn-1)*wgap;
+  const cell = Math.max(20, Math.min(34, Math.floor(free/days.length - gap)));
+  const W = Math.max(Wc, nameW + totW + 20 + days.length*(cell+gap) + (weeksIn-1)*wgap);
+  const H = headH + emps.length*(cell+gap) + 4;
+  const id = 'hx'+(UID++);
+  let xs = [], cur = W-nameW-8, prevW = null;
+  days.forEach(d => { if (prevW != null && d.week !== prevW) cur -= wgap; xs.push(cur-cell); cur -= cell+gap; prevW = d.week; });
+  let s = svgOpen(W, H, 'מפת נוכחות: עובדים מול ימים') + hatchDef(id);
+  // week labels
+  const byWeek = {};
+  days.forEach((d,i) => { (byWeek[d.week] = byWeek[d.week] || []).push(i); });
+  for (const w in byWeek){ const ii = byWeek[w]; const x1 = xs[ii[0]]+cell, x0 = xs[ii[ii.length-1]];
+    s += `<text class="wk" x="${(x0+x1)/2}" y="10" text-anchor="middle" direction="rtl">שבוע ${+w+1}</text><line class="base" x1="${x0}" x2="${x1}" y1="20" y2="20"/>`; }
+  days.forEach((d,i) => {
+    const cx = xs[i]+cell/2;
+    s += `<text class="xl" x="${cx}" y="33" text-anchor="middle">${WD[d.date.getDay()].replace('׳','')}</text>`;
+    s += `<text class="tick" x="${cx}" y="48" text-anchor="middle">${d.date.getDate()}</text>`;
+  });
+  const totX = xs[xs.length-1] - 12;
+  s += `<text class="tick" x="${totX}" y="48" text-anchor="start" direction="rtl">שעות</text>`;
+  emps.forEach((e,ri) => {
+    const y = headH + ri*(cell+gap), dim = STATE.emp && STATE.emp !== e;
+    s += `<g${dim?' class="dim"':''}>`;
+    s += `<g class="namebtn" data-emp="${esc(e)}">${rtlText(W-4, y+cell/2, 'lbl', e)}<rect class="hit" x="${W-nameW}" y="${y}" width="${nameW}" height="${cell}"/></g>`;
+    let tot = 0;
+    days.forEach((d,i) => {
+      if (d.closed) return;
+      const st = status(D,e,d), x = xs[i], c = D.cells.get(e+'|'+d.key);
+      if (st === 'na' || st === 'nodata') return;
+      let cls, glyph = '', tip = `<b>${esc(e)}</b> · ${WD_FULL[d.date.getDay()]} ${ddmm(d.date)}<br>`;
+      if (st === 'full'){ const h = (c.out-c.in)/60; tot += h; cls = 'h'+binOf(h); tip += `${hm(c.in)} – ${hm(c.out)}<br>${dur(h)} שעות`; }
+      else if (st === 'partial'){ cls = 'c-warn'; glyph = `<text class="g-dark" x="${x+cell/2}" y="${y+cell/2+1}" text-anchor="middle" dominant-baseline="central">!</text>`; tip += c.in!=null?`כניסה ${hm(c.in)} · <b>חסרה יציאה</b>`:`<b>חסרה כניסה</b> · יציאה ${hm(c.out)}`; }
+      else if (st === 'bad'){ cls = 'c-crit'; glyph = `<text class="g-light" x="${x+cell/2}" y="${y+cell/2+1}" text-anchor="middle" dominant-baseline="central">×</text>`; tip += `כניסה ${hm(c.in)} · יציאה ${hm(c.out)}<br><b>יציאה לפני כניסה</b>`; }
+      else if (st === 'note'){ cls = 'c-note'; tip += esc(c.note); }
+      else { cls = 'c-abs'; tip += '<span class="t-m">לא הגיע/ה</span>'; }
+      s += `<g class="cell"${tipAttr(tip)}><rect class="${cls}" x="${x}" y="${y}" width="${cell}" height="${cell}" rx="4"/>${glyph}</g>`;
+    });
+    s += `<text class="val" x="${totX}" y="${y+cell/2}" text-anchor="end" dominant-baseline="central">${tot?num1(tot):'—'}</text></g>`;
+  });
+  // closed days: one tall hatched column
+  days.forEach((d,i) => {
+    if (!d.closed) return;
+    const x = xs[i], y0 = headH, h = emps.length*(cell+gap)-gap;
+    s += `<g class="cell"${tipAttr(`<b>${WD_FULL[d.date.getDay()]} ${ddmm(d.date)}</b><br>${esc(d.note||'יום סגור')}`)}><rect x="${x}" y="${y0}" width="${cell}" height="${h}" rx="4" fill="url(#${id})"/>`;
+    s += `<text class="closed-t" transform="translate(${x+cell/2},${y0+h/2}) rotate(-90)" text-anchor="middle" dominant-baseline="central" direction="rtl">${esc(shortNote(d.note))}</text></g>`;
+  });
+  el.innerHTML = s + '</svg>';
+  const rampLabels = ['<1','1–2','2–3','3–4','4–5','5+'];
+  $('#heatLegend').innerHTML = `<span class="it"><span><span class="ramp">${[1,2,3,4,5,6].map(i => `<i style="background:var(--h${i})"></i>`).join('')}</span><span class="ramp-l tnum">${rampLabels.map(l => `<span>${l}</span>`).join('')}</span></span>שעות ביום</span>
+    <span class="it"><span class="sw" style="background:var(--warn);color:#0b0b0b">!</span>החתמה חסרה</span>
+    <span class="it"><span class="sw" style="background:var(--empty);border:1px solid var(--line)"></span>לא הגיע/ה</span>
+    <span class="it"><span class="sw hatch-sw"></span>יום סגור</span>
+    <span class="it"><span class="sw" style="background:var(--note)"></span>הערה בתא</span>
+    <span class="it muted">משבצת ריקה: לא ברשימה באותו שבוע</span>`;
+}
+function shortNote(n){ if (!n) return 'סגור'; const t = n.split(/[-–,]/)[0].trim(); return t.length > 16 ? 'סגור' : t; }
+
+/* ---------- daily headcount ---------- */
+function renderDaily(){
+  if (STATE.emp) return;
+  const D = STATE.data, el = $('#daily'), W = Math.max(300, el.clientWidth);
+  const days = PDAYS.filter(d => d.has || d.closed);
+  const counts = days.map(d => d.closed ? null : presentOn(D,d));
+  const vals = counts.filter(Boolean).map(a => a.length);
+  const H = 240, top = 22, bot = 48, axisW = 28, xR = W-axisW, xL = 4, wgap = 14;
+  const weeksIn = new Set(days.map(d => d.week)).size;
+  const slot = (xR-xL-(weeksIn-1)*wgap)/days.length, cw = Math.min(24, slot*.62);
+  const max = Math.max(1, ...vals), st = niceStep(max, 4, true), yMax = Math.ceil(max/st)*st;
+  const y = v => top + (H-top-bot)*(1 - v/yMax), yB = H-bot;
+  const id = 'hd'+(UID++);
+  let s = svgOpen(W, H, 'מספר העובדים שהגיעו בכל יום') + hatchDef(id);
+  for (let t = 0; t <= yMax; t += st) s += `<line class="${t?'grid':'base'}" x1="${xL}" x2="${xR}" y1="${y(t)}" y2="${y(t)}"/><text class="tick" x="${W}" y="${y(t)}" text-anchor="end" dominant-baseline="central">${t}</text>`;
+  const avg = mean(vals);
+  let cur = xR, prev = null; const cx = [];
+  days.forEach(d => { if (prev != null && d.week !== prev) cur -= wgap; cx.push(cur - slot/2); cur -= slot; prev = d.week; });
+  const vMax = Math.max(...vals), vMin = Math.min(...vals);
+  let labeledMax = false, labeledMin = false;
+  const dense = slot < 34;
+  days.forEach((d,i) => {
+    const x = cx[i];
+    if (d.closed){
+      s += `<g class="col"${tipAttr(`<b>${WD_FULL[d.date.getDay()]} ${ddmm(d.date)}</b><br>${esc(d.note||'יום סגור')}`)}><rect class="hit" x="${x-slot/2}" y="${top}" width="${slot}" height="${yB-top}"/><rect x="${x-cw/2}" y="${top}" width="${cw}" height="${yB-top}" rx="4" fill="url(#${id})" opacity=".8"/>`;
+      s += `<text class="closed-t" transform="translate(${x},${(top+yB)/2}) rotate(-90)" text-anchor="middle" dominant-baseline="central">${esc(shortNote(d.note))}</text></g>`;
+    } else {
+      const who = counts[i], v = who.length;
+      const on = !STATE.emp || who.includes(STATE.emp);
+      const tip = `<b>${WD_FULL[d.date.getDay()]} ${ddmm(d.date)}</b> · ${v} עובדים<br><span class="t-m">${who.map(esc).join('، ')}</span>${STATE.emp?`<br>${esc(STATE.emp)}: ${on?'הגיע/ה':'לא הגיע/ה'}`:''}`;
+      s += `<g class="col"${tipAttr(tip)}><rect class="hit" x="${x-slot/2}" y="${top-16}" width="${slot}" height="${yB-top+16}"/>`;
+      s += `<path class="${on?'mk-s1':'mk-mute'}" d="${vbar(x-cw/2, yB, cw, yB-y(v))}"/>`;
+      let lab = false;
+      if (v === vMax && !labeledMax){ lab = labeledMax = true; } else if (v === vMin && !labeledMin && vMin !== vMax){ lab = labeledMin = true; }
+      if (lab || !dense) s += `<text class="val" x="${x}" y="${y(v)-7}" text-anchor="middle">${v}</text>`;
+      s += `</g>`;
+    }
+    if (!dense){
+      s += `<text class="xl" x="${x}" y="${yB+16}" text-anchor="middle">${WD[d.date.getDay()].replace('׳','')}</text><text class="tick" x="${x}" y="${yB+31}" text-anchor="middle">${ddmm(d.date)}</text>`;
+    } else if (slot >= 12){
+      s += `<text class="tick" x="${x}" y="${yB+16}" text-anchor="middle">${WD[d.date.getDay()].replace('׳','')}</text>`;
+    }
+  });
+  if (dense){
+    const byWeek = {}; days.forEach((d,i) => (byWeek[d.week] = byWeek[d.week] || []).push(i));
+    for (const w in byWeek){ const ii = byWeek[w]; const a = cx[ii[0]], b = cx[ii[ii.length-1]];
+      s += `<text class="tick" x="${(a+b)/2}" y="${yB+34}" text-anchor="middle" direction="rtl">${STATE.data.weeks[w].label}</text>`; }
+  }
+  if (avg != null){ s += `<line class="avg" x1="${xL}" x2="${xR}" y1="${y(avg)}" y2="${y(avg)}"/><text class="val" x="${xR-2}" y="${y(avg)-7}" text-anchor="start" direction="rtl">ממוצע ${numN(avg)}</text>`; }
+  el.innerHTML = s + '</svg>';
+  $('#dailySub').textContent = STATE.emp ? `בכחול: ימים ש${STATE.emp} הגיע/ה. אפור: ימים שלא.` : `ממוצע ${avg!=null?numN(avg):'—'} עובדים ביום, בין ${vMin} ל-${vMax}`;
+}
+
+/* ---------- generic columns ---------- */
+function colChart(el, items, o){
+  const W = Math.max(280, el.clientWidth), H = o.H || 220, top = 24, bot = 46, axisW = 34, xR = W-axisW, xL = 4;
+  const n = items.length, slot = (xR-xL)/n, cw = Math.min(40, slot*.5);
+  const max = Math.max(o.minMax || 1e-6, ...items.map(i => i.value || 0)), st = niceStep(max, 4, o.int), yMax = Math.ceil(max/st - 1e-9)*st;
+  const y = v => top + (H-top-bot)*(1 - v/yMax), yB = H-bot;
+  let s = svgOpen(W, H, o.aria);
+  for (let k = 0, t = 0; t <= yMax+1e-9; k++, t = k*st) s += `<line class="${t?'grid':'base'}" x1="${xL}" x2="${xR}" y1="${y(t)}" y2="${y(t)}"/><text class="tick" x="${W}" y="${y(t)}" text-anchor="end" dominant-baseline="central">${o.tick(t)}</text>`;
+  items.forEach((it,i) => {
+    const cx = xR - slot*(i+.5), v = it.value || 0;
+    s += `<g class="col"${tipAttr(it.tip)}><rect class="hit" x="${cx-slot/2}" y="${top-18}" width="${slot}" height="${yB-top+18}"/>`;
+    if (v > 0) s += `<path class="${it.mute?'mk-mute':'mk-s1'}" d="${vbar(cx-cw/2, yB, cw, yB-y(v))}"/>`;
+    s += `<text class="val" x="${cx}" y="${y(v)-7}" text-anchor="middle">${it.value==null?'—':o.fmt(v)}</text>`;
+    s += `<text class="xl" x="${cx}" y="${yB+17}" text-anchor="middle" direction="rtl">${esc(it.l1)}</text>`;
+    if (it.l2) s += `<text class="tick" x="${cx}" y="${yB+32}" text-anchor="middle" direction="rtl">${esc(it.l2)}</text>`;
+    s += `</g>`;
+  });
+  el.innerHTML = s + '</svg>';
+}
+function renderWeekly(){
+  const D = STATE.data, e = STATE.emp;
+  const items = D.weeks.map(w => {
+    const ss = (e ? [e] : D.emps).map(x => empStats(D, w.days, x));
+    const hours = ss.reduce((a,s) => a+s.hours, 0);
+    const work = w.days.filter(d => !d.closed && d.has);
+    const heads = work.map(d => presentOn(D,d).length);
+    const closed = w.days.filter(d => d.closed).length;
+    const tip = `<b>שבוע ${w.idx+1}</b> · ${w.label}<br>${num1(hours)} שעות${e?` · ${ss[0].present} ימי נוכחות`:` · ממוצע ${heads.length?numN(mean(heads)):'—'} עובדים ביום`}<br><span class="t-m">${work.length} ימי פעילות${closed?` · ${closed} סגור`:''}</span>`;
+    return {l1:`שבוע ${w.idx+1}`, l2:w.label, value:hours, tip, mute:STATE.period!=='all' && +STATE.period !== w.idx};
+  });
+  $('#weeklyTitle').textContent = e ? `שעות לפי שבוע · ${e}` : 'שעות לפי שבוע';
+  $('#weeklySub').textContent = e ? 'סה״כ שעות של העובד בכל שבוע' : 'סה״כ שעות של כל העובדים בכל שבוע. שבוע עם יום סגור יוצא נמוך יותר.';
+  colChart($('#weekly'), items, {aria:'שעות לפי שבוע', fmt:v => num1(v), tick:t => numN(t)});
+}
+function renderWeekday(){
+  const D = STATE.data, e = STATE.emp;
+  const wds = [...new Set(WORK.map(d => d.date.getDay()))].sort();
+  const items = wds.map(g => {
+    const ds = WORK.filter(d => d.date.getDay() === g);
+    if (e){
+      const s = empStats(D, ds, e);
+      return {l1:WD_FULL[g], value:s.pct==null?null:s.pct*100, tip:`<b>יום ${WD_FULL[g]}</b><br>${esc(e)} הגיע/ה ב-${s.present} מתוך ${s.possible} ימים`};
+    }
+    const heads = ds.map(d => presentOn(D,d).length);
+    return {l1:WD_FULL[g], value:mean(heads), tip:`<b>יום ${WD_FULL[g]}</b><br>ממוצע ${numN(mean(heads))} עובדים<br><span class="t-m">${ds.length} ימים: ${heads.join(', ')}</span>`};
+  });
+  $('#wdTitle').textContent = e ? `לפי יום בשבוע · ${e}` : 'לפי יום בשבוע';
+  $('#wdSub').textContent = e ? 'באיזה אחוז מהימים מכל סוג העובד הגיע' : 'כמה עובדים מגיעים בממוצע בכל יום בשבוע';
+  colChart($('#weekday'), items, e
+    ? {aria:'אחוז נוכחות לפי יום בשבוע', fmt:v => Math.round(v)+'%', tick:t => Math.round(t)+'%', minMax:100}
+    : {aria:'ממוצע עובדים לפי יום בשבוע', fmt:v => numN(v), tick:t => numN(t)});
+}
+
+/* ---------- arrival / exit strip ---------- */
+function renderArrEmp(){
+  const D = STATE.data, e = STATE.emp, el = $('#arr'), W = Math.max(300, el.clientWidth);
+  $('#arrTitle').textContent = `הגעה ויציאה בכל יום · ${e}`;
+  $('#arrSub').textContent = 'כל פס הוא יום עבודה, משעת הכניסה עד שעת היציאה. משמאל: כמה שעות עבד/ה באותו יום.';
+  const rows = PDAYS.filter(d => PRESENT.has(status(D,e,d))).map(d => ({d, st:status(D,e,d), c:D.cells.get(e+'|'+d.key)}));
+  if (!rows.length){ el.innerHTML = '<p class="muted">אין החתמות של העובד בתקופה הזו.</p>'; return; }
+  const all = rows.flatMap(r => [r.c.in, r.c.out]).filter(v => v != null);
+  let t0 = Math.floor(Math.min(...all)/60)*60, t1 = Math.ceil(Math.max(...all)/60)*60; if (t1 - t0 < 120) t1 = t0 + 120;
+  const nameW = 84, rowH = 28, barH = 12, top = 30, durW = 58, labW = 46;
+  const xR = W-nameW-labW-8, xL = durW+labW, H = top + rows.length*rowH + 6;
+  const x = t => xR - (t-t0)/(t1-t0)*(xR-xL);
+  const stepH = (xR-xL)/((t1-t0)/60) < 52 ? 120 : 60;
+  let s = svgOpen(W, H, `שעות הגעה ויציאה בכל יום של ${e}`);
+  for (let t = t0; t <= t1; t += stepH) s += `<line class="grid" x1="${x(t)}" x2="${x(t)}" y1="${top-8}" y2="${H-4}"/><text class="tick" x="${x(t)}" y="12" text-anchor="middle">${hm(t)}</text>`;
+  s += `<text class="tick" x="4" y="12" text-anchor="end" direction="rtl">שעות</text>`;
+  rows.forEach((r,i) => {
+    const y = top + i*rowH + rowH/2, c = r.c;
+    let tip = `<b>${WD_FULL[r.d.date.getDay()]} ${ddmm(r.d.date)}</b><br>`, body = '', hrs = '—';
+    if (r.st === 'full'){
+      const h = (c.out-c.in)/60; hrs = dur(h);
+      tip += `${hm(c.in)} – ${hm(c.out)} · ${hrs} שעות`;
+      body = `<rect class="mk-s1" x="${x(c.out)}" y="${y-barH/2}" width="${x(c.in)-x(c.out)}" height="${barH}" rx="${barH/2}"/>`
+        + `<text class="tlab" x="${x(c.in)+7}" y="${y}" text-anchor="start" dominant-baseline="central">${hm(c.in)}</text>`
+        + `<text class="tlab" x="${x(c.out)-7}" y="${y}" text-anchor="end" dominant-baseline="central">${hm(c.out)}</text>`;
+    } else if (r.st === 'partial' && c.in != null){
+      tip += `כניסה ${hm(c.in)} · <b>חסרה יציאה</b>`;
+      body = `<circle class="c-warn" cx="${x(c.in)}" cy="${y}" r="5.5"/><text class="tlab" x="${x(c.in)+9}" y="${y}" text-anchor="start" dominant-baseline="central">${hm(c.in)}</text>`
+        + `<text class="val" x="${x(c.in)-11}" y="${y}" text-anchor="start" direction="rtl" dominant-baseline="central">חסרה יציאה</text>`;
+    } else if (r.st === 'partial'){
+      tip += `<b>חסרה כניסה</b> · יציאה ${hm(c.out)}`;
+      body = `<circle class="c-warn" cx="${x(c.out)}" cy="${y}" r="5.5"/><text class="tlab" x="${x(c.out)-9}" y="${y}" text-anchor="end" dominant-baseline="central">${hm(c.out)}</text>`
+        + `<text class="val" x="${x(c.out)+11}" y="${y}" text-anchor="end" direction="rtl" dominant-baseline="central">חסרה כניסה</text>`;
+    } else {
+      tip += `כניסה ${hm(c.in)} · יציאה ${hm(c.out)}<br><b>יציאה לפני כניסה</b>`;
+      body = `<circle class="c-crit" cx="${x(c.in)}" cy="${y}" r="5.5"/><text class="val" x="${x(c.in)-11}" y="${y}" text-anchor="start" direction="rtl" dominant-baseline="central">יציאה לפני כניסה</text>`;
+    }
+    s += `<g class="row"${tipAttr(tip)}><rect class="hit" x="0" y="${y-rowH/2}" width="${W}" height="${rowH}" rx="6"/>`;
+    s += rtlText(W-6, y, 'lbl', dayName(r.d.date)) + body;
+    s += `<text class="val" x="4" y="${y}" text-anchor="start" dominant-baseline="central">${hrs}</text></g>`;
+  });
+  el.innerHTML = s + '</svg>';
+}
+function renderArr(){
+  if (STATE.emp) return renderArrEmp();
+  $('#arrTitle').textContent = 'יום טיפוסי לכל עובד';
+  $('#arrSub').textContent = 'הפס מתחיל בשעת ההגעה הטיפוסית ונגמר בשעת היציאה הטיפוסית (חציון של כל ההחתמות בתקופה). משמאל: אורך יום ממוצע.';
+  const el = $('#arr'), W = Math.max(300, el.clientWidth);
+  const rows = STATS.filter(s => s.ins.length || s.outs.length).sort((a,b) => (a.inMed ?? 9999) - (b.inMed ?? 9999));
+  if (!rows.length){ el.innerHTML = '<p class="muted">אין החתמות בתקופה הזו.</p>'; return; }
+  const marks = rows.flatMap(s => [s.inMed, s.outMed]).filter(v => v != null);
+  let t0 = Math.floor(Math.min(...marks)/60)*60, t1 = Math.ceil(Math.max(...marks)/60)*60; if (t1 - t0 < 120) t1 = t0 + 120;
+  const nameW = Math.min(118, W*.28), rowH = 32, barH = 14, top = 30, durW = 58, labW = 46;
+  const xR = W-nameW-labW-8, xL = durW+labW;
+  const H = top + rows.length*rowH + 6;
+  const x = t => xR - (t-t0)/(t1-t0)*(xR-xL);
+  const stepH = (xR-xL)/((t1-t0)/60) < 52 ? 120 : 60;
+  let s = svgOpen(W, H, 'יום עבודה טיפוסי לכל עובד: שעת הגעה ושעת יציאה');
+  for (let t = t0; t <= t1; t += stepH) s += `<line class="grid" x1="${x(t)}" x2="${x(t)}" y1="${top-8}" y2="${H-4}"/><text class="tick" x="${x(t)}" y="12" text-anchor="middle">${hm(t)}</text>`;
+  s += `<text class="tick" x="4" y="12" text-anchor="end" direction="rtl">שעות ביום</text>`;
+  rows.forEach((r,i) => {
+    const y = top + i*rowH + rowH/2, on = !STATE.emp || STATE.emp === r.e;
+    const rng = a => a.length > 1 ? ` <span class="t-m">(בין ${hm(Math.min(...a))} ל-${hm(Math.max(...a))})</span>` : '';
+    const tip = `<b>${esc(r.e)}</b><br>הגעה טיפוסית ${hm(r.inMed)}${rng(r.ins)}<br>יציאה טיפוסית ${hm(r.outMed)}${rng(r.outs)}<br>יום ממוצע ${dur(r.avgDay)} שעות · ${r.full} ימים מלאים`;
+    s += `<g class="row${STATE.emp===r.e?' sel':''}" data-emp="${esc(r.e)}"${tipAttr(tip)}><rect class="hit" x="0" y="${y-rowH/2}" width="${W}" height="${rowH}" rx="6"/>`;
+    s += rtlText(W-6, y, 'lbl', r.e, on?'':' opacity=".55"');
+    if (r.inMed != null && r.outMed != null && r.outMed > r.inMed){
+      s += `<rect class="${on?'mk-s1':'mk-mute'}" x="${x(r.outMed)}" y="${y-barH/2}" width="${x(r.inMed)-x(r.outMed)}" height="${barH}" rx="${barH/2}"/>`;
+    } else if (r.inMed != null){
+      s += `<circle class="${on?'mk-s1':'mk-mute'}" cx="${x(r.inMed)}" cy="${y}" r="5"/>`;
+    }
+    if (r.inMed != null) s += `<text class="tlab" x="${x(r.inMed)+7}" y="${y}" text-anchor="start" dominant-baseline="central">${hm(r.inMed)}</text>`;
+    if (r.outMed != null && r.outMed > (r.inMed ?? -1)) s += `<text class="tlab" x="${x(r.outMed)-7}" y="${y}" text-anchor="end" dominant-baseline="central">${hm(r.outMed)}</text>`;
+    s += `<text class="val" x="4" y="${y}" text-anchor="start" dominant-baseline="central">${dur(r.avgDay)}</text>`;
+    s += `</g>`;
+  });
+  el.innerHTML = s + '</svg>';
+}
+
+/* ---------- table ---------- */
+const COLS = [
+  {k:'e', l:'עובד', v:s=>s.e, f:s=>esc(s.e), cls:'name'},
+  {k:'present', l:'ימי נוכחות', v:s=>s.present, f:s=>`${s.present} <span class="muted">/ ${s.possible}</span>`},
+  {k:'pct', l:'אחוז נוכחות', v:s=>s.pct ?? -1, f:s=>s.pct==null?'—':`<span class="meter"><span><i style="width:${Math.round(s.pct*100)}%"></i></span>${Math.round(s.pct*100)}%</span>`},
+  {k:'hours', l:'סה״כ שעות', v:s=>s.hours, f:s=>num1(s.hours)},
+  {k:'avgDay', l:'ממוצע ליום', v:s=>s.avgDay ?? -1, f:s=>dur(s.avgDay)},
+  {k:'inMed', l:'הגעה טיפוסית', v:s=>s.inMed ?? 9999, f:s=>hm(s.inMed)},
+  {k:'outMed', l:'יציאה טיפוסית', v:s=>s.outMed ?? 9999, f:s=>hm(s.outMed)},
+  {k:'missing', l:'החתמות חסרות', v:s=>s.missing, f:s=>s.missing?`<span class="miss"><span class="sw" style="background:var(--warn);color:#0b0b0b;width:16px;height:16px;border-radius:50%">!</span>${s.missing}</span>`:'<span class="muted">0</span>'}
+];
+function renderLog(){
+  const D = STATE.data, e = STATE.emp;
+  $('#tblTitle').textContent = `יומן נוכחות · ${e}`;
+  $('#tblSub').textContent = 'כל ימי העבודה בתקופה שנבחרה';
+  const ST = {full:['i-good','✓','תקין'], partial:['i-warn','!',''], bad:['i-crit','×','יציאה לפני כניסה'], absent:['i-none','–','לא הגיע/ה'], note:['i-none','i',''], closed:['i-none','–','']};
+  const days = PDAYS.filter(d => { const st = status(D,e,d); return st !== 'na' && st !== 'nodata'; });
+  let h = `<table class="data logt"><thead><tr><th>יום</th><th>כניסה</th><th>יציאה</th><th>שעות</th><th>מצב</th></tr></thead><tbody>`;
+  for (const d of days){
+    const st = status(D,e,d), c = D.cells.get(e+'|'+d.key) || {};
+    let lab = ST[st][2];
+    if (st === 'partial') lab = c.in == null ? 'חסרה כניסה' : 'חסרה יציאה';
+    if (st === 'note') lab = c.note;
+    if (st === 'closed') lab = d.note || 'יום סגור';
+    h += `<tr class="${st==='absent'||st==='closed'?'off':''}"><td class="name">${dayName(d.date)}</td><td>${c.in!=null?hm(c.in):'—'}</td><td>${c.out!=null?hm(c.out):'—'}</td><td>${st==='full'?dur((c.out-c.in)/60):'—'}</td><td><span class="pill"><i class="${ST[st][0]}">${ST[st][1]}</i>${esc(lab)}</span></td></tr>`;
+  }
+  $('#table').innerHTML = h + '</tbody></table>';
+}
+function renderTable(){
+  if (STATE.emp) return renderLog();
+  $('#tblTitle').textContent = 'טבלת עובדים';
+  $('#tblSub').textContent = 'לחיצה על כותרת ממיינת. לחיצה על שורה מתמקדת בעובד.';
+  const {k, dir} = STATE.sort, col = COLS.find(c => c.k === k);
+  const rows = [...STATS].sort((a,b) => { const x = col.v(a), y = col.v(b); return (typeof x === 'string' ? x.localeCompare(y,'he') : x-y) * dir; });
+  let h = `<table class="data"><thead><tr>${COLS.map(c => `<th${c.k===k?` aria-sort="${dir>0?'ascending':'descending'}"`:''}><button data-sort="${c.k}">${c.l}${c.k===k?(dir>0?' ↑':' ↓'):''}</button></th>`).join('')}</tr></thead><tbody>`;
+  h += rows.map(s => `<tr data-emp="${esc(s.e)}"${STATE.emp===s.e?' class="sel"':''}>${COLS.map(c => `<td${c.cls?` class="${c.cls}"`:''}>${c.f(s)}</td>`).join('')}</tr>`).join('');
+  $('#table').innerHTML = h + '</tbody></table>';
+}
+
+/* ---------- orchestration ---------- */
+function compute(){
+  const D = STATE.data;
+  PDAYS = D.days.filter(d => STATE.period === 'all' || d.week === +STATE.period);
+  WORK = PDAYS.filter(d => !d.closed && d.has);
+  STATS = D.emps.map(e => empStats(D, PDAYS, e)).filter(s => s.possible > 0 || s.present > 0);
+  if (STATE.emp && !STATS.some(s => s.e === STATE.emp)) STATE.emp = '';
+}
+function renderCharts(){ renderBars(); renderHeat(); renderDaily(); renderWeekly(); renderWeekday(); renderArr(); }
+function renderAll(){
+  compute();
+  const one = !!STATE.emp;
+  $('#pBars').hidden = one; $('#pDaily').hidden = one;
+  $('#pIssues').classList.toggle('span-5', !one);
+  renderMeta(); renderFilters(); renderKPIs(); renderIssues(); renderTable(); renderCharts(); }
+function setEmp(e){ STATE.emp = STATE.emp === e ? '' : e; renderAll(); }
+
+function setStatus(kind, html){
+  const el = $('#status');
+  if (!kind){ el.hidden = true; return; }
+  el.className = 'status ' + kind; el.hidden = false;
+  el.innerHTML = `<span class="ic">${kind==='err'?'!':kind==='ok'?'✓':'…'}</span><div>${html}</div>`;
+}
+function showMode(hasData){
+  $('#welcome').hidden = hasData;
+  $('#filters').hidden = !hasData;
+  $('#main').hidden = !hasData;
+  $('#help').hidden = hasData;
+  $('#helpBtn').setAttribute('aria-expanded', String(!hasData));
+}
+function showEmpty(){
+  STATE.data = null; STATE.book = null; STATE.emp = '';
+  $('#title').textContent = 'נוכחות מבוגרים';
+  $('#eyebrow').textContent = 'כרטיס נוכחות חודשי';
+  $('#clearEmp').hidden = true;
+  document.title = 'נוכחות מבוגרים';
+  $('#meta').innerHTML = '<span>עדיין לא נטען קובץ</span>';
+  showMode(false);
+}
+function loadBook(book){
+  const D = parseBook(book);
+  STATE.data = D; STATE.book = book; STATE.period = 'all'; STATE.emp = '';
+  showMode(true);
+  renderAll();
+  return D;
+}
+const closeLink = '<button class="linkbtn" id="closeFile">סגירת הקובץ</button>';
+function libReady(){
+  if (window.XLSX) return Promise.resolve();
+  return new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'; s.onload = res; s.onerror = () => rej(new Error('lib')); document.head.appendChild(s); });
+}
+async function readFile(f){
+  if (!f) return;
+  setStatus('load', `קורא את <b>${esc(f.name)}</b>…`);
+  try {
+    await libReady();
+    const wb = XLSX.read(await f.arrayBuffer(), {type:'array'});
+    const book = {file:f.name, sheets:wb.SheetNames.map(n => {
+      const ws = wb.Sheets[n];
+      if (!ws || !ws['!ref']) return {name:n, rows:[], merges:[]};
+      const rg = XLSX.utils.decode_range(ws['!ref']);
+      const raw = XLSX.utils.sheet_to_json(ws, {header:1, raw:true, defval:null, blankrows:true});
+      const rows = Array.from({length:rg.s.r}, () => []).concat(raw.map(r => Array(rg.s.c).fill(null).concat(r)));
+      return {name:n, rows, merges:(ws['!merges']||[]).map(m => [m.s.r, m.s.c, m.e.r, m.e.c])};
+    })};
+    const D = loadBook(book);
+    try { localStorage.setItem(LS_KEY, JSON.stringify(book)); } catch(e) {}
+    const work = D.days.filter(d => !d.closed && d.has).length;
+    setStatus('ok', `נטען <b>${esc(f.name)}</b>: ${D.emps.length} עובדים, ${D.weeks.length} שבועות, ${work} ימי פעילות. ${closeLink}`);
+  } catch (err){
+    const msg = err.message === 'lib' ? 'לא הצלחתי לטעון את רכיב קריאת האקסל. בדקו את החיבור לאינטרנט ונסו שוב.'
+      : err.message === 'nodates' ? 'לא מצאתי בקובץ שורת תאריכים כמו <span class="tnum">א\' 28.06.26</span>. ודאו שהקובץ בנוי כמו גיליון הנוכחות: שורת תאריכים, שורת כניסה/יציאה ושורה לכל עובד.'
+      : err.message === 'noemps' ? 'מצאתי תאריכים אבל לא שמות עובדים. השמות צריכים להיות בעמודה שלפני התאריך הראשון.'
+      : 'לא הצלחתי לקרוא את הקובץ. ודאו שזה קובץ אקסל (xlsx) תקין.';
+    setStatus('err', `${esc(f.name)}: ${msg} <button class="linkbtn" id="helpLink">מבנה הקובץ</button>`);
+  }
+}
+
+/* ---------- events ---------- */
+$('#file').addEventListener('change', e => { readFile(e.target.files[0]); e.target.value = ''; });
+$('#helpBtn').addEventListener('click', e => { const h = $('#help'); h.hidden = !h.hidden; e.currentTarget.setAttribute('aria-expanded', String(!h.hidden)); });
+document.addEventListener('click', e => {
+  if (e.target.closest('#helpLink')){ $('#help').hidden = false; $('#helpBtn').setAttribute('aria-expanded','true'); return; }
+  if (e.target.closest('#closeFile')){ try { localStorage.removeItem(LS_KEY); } catch(_) {} showEmpty(); setStatus(null); return; }
+  const p = e.target.closest('[data-p]'); if (p){ STATE.period = p.dataset.p; renderAll(); return; }
+  const m = e.target.closest('[data-m]'); if (m){ STATE.metric = m.dataset.m; document.querySelectorAll('#metric button').forEach(b => b.setAttribute('aria-pressed', String(b === m))); renderBars(); return; }
+  const so = e.target.closest('[data-sort]'); if (so){ const k = so.dataset.sort; STATE.sort = STATE.sort.k === k ? {k, dir:-STATE.sort.dir} : {k, dir:k==='e'||k==='inMed'||k==='outMed'?1:-1}; renderTable(); return; }
+  const em = e.target.closest('[data-emp]'); if (em){ setEmp(em.dataset.emp); return; }
+});
+document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('g[data-emp]')){ e.preventDefault(); setEmp(e.target.dataset.emp); } });
+$('#emp').addEventListener('change', e => { STATE.emp = e.target.value; renderAll(); });
+$('#clearEmp').addEventListener('click', () => { STATE.emp = ''; renderAll(); });
+
+const tip = $('#tip');
+function placeTip(x, y){ const w = tip.offsetWidth, h = tip.offsetHeight; let L = x - w/2, T = y - h - 14; L = Math.max(8, Math.min(innerWidth - w - 8, L)); if (T < 8) T = y + 18; tip.style.left = L+'px'; tip.style.top = T+'px'; }
+function showTip(t){ tip.innerHTML = t.dataset.tip; tip.hidden = false; }
+document.addEventListener('pointerover', e => { const t = e.target.closest && e.target.closest('[data-tip]'); if (!t){ tip.hidden = true; return; } showTip(t); placeTip(e.clientX, e.clientY); });
+document.addEventListener('pointermove', e => { if (!tip.hidden) placeTip(e.clientX, e.clientY); });
+document.addEventListener('focusin', e => { const t = e.target.closest && e.target.closest('[data-tip]'); if (t){ showTip(t); const r = t.getBoundingClientRect(); placeTip(r.left + r.width/2, r.top); } });
+document.addEventListener('focusout', () => { tip.hidden = true; });
+addEventListener('scroll', () => { tip.hidden = true; }, {passive:true});
+
+let dragDepth = 0;
+addEventListener('dragenter', e => { if ([...(e.dataTransfer?.types||[])].includes('Files')){ dragDepth++; $('#drop').hidden = false; } });
+addEventListener('dragleave', () => { dragDepth = Math.max(0, dragDepth-1); if (!dragDepth) $('#drop').hidden = true; });
+addEventListener('dragover', e => e.preventDefault());
+addEventListener('drop', e => { e.preventDefault(); dragDepth = 0; $('#drop').hidden = true; readFile(e.dataTransfer.files[0]); });
+
+let raf = 0;
+new ResizeObserver(() => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => STATE.data && renderCharts()); }).observe($('main'));
+
+/* ---------- boot ---------- */
+(function boot(){
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(LS_KEY) || 'null'); } catch(e) {}
+  if (saved){
+    try { loadBook(saved); setStatus('ok', `מוצג הקובץ האחרון שהעלית בדפדפן הזה: <b>${esc(saved.file)}</b>. ${closeLink}`); return; } catch(e) {}
+  }
+  showEmpty();
+})();
+</script>
+
+</body>
+</html>
